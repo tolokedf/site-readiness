@@ -1,0 +1,11 @@
+{
+  "name": "DF Ultimate",
+  "description": "Site readiness validation and verification checklist tool for DF Automation and Robotics AMR deployments",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

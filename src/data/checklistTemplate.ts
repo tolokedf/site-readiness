@@ -1,0 +1,274 @@
+import { ChecklistSection } from '../types';
+
+export const DEFAULT_CHECKLIST_SECTIONS: ChecklistSection[] = [
+  {
+    id: 'network-it',
+    title: 'Network & IT Infrastructure',
+    items: [
+      {
+        number: 1,
+        requirement: 'Network/Wi-Fi coverage, availability, and stability across all AMR operational areas (including docking and charging zones)',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 2,
+        requirement: 'Static IP address allocation for AMRs, DFleet and Remote IO',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 3,
+        requirement: 'MAC address registration or network whitelist requirements',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 4,
+        requirement: 'Network security restrictions (firewall rules, VLANs, port access)',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 5,
+        requirement: 'Accessibility to required system interfaces (ERP, WMS, MES, REST API, database, etc.)',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 6,
+        requirement: 'Availability of IT personnel for network configuration and troubleshooting',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 7,
+        requirement: 'Allocated location for DFleet server',
+        status: 'PENDING',
+        userRemark: '',
+      },
+    ],
+  },
+  {
+    id: 'power-electrical',
+    title: 'Power & Electrical Requirements',
+    items: [
+      {
+        number: 1,
+        requirement: 'Power specifications (voltage, phase, current capacity)',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 2,
+        requirement: 'Power supply availability for DFleet server',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 3,
+        requirement: 'Availability of UPS backup for servers, networking equipment, or control systems (if required)',
+        status: 'PENDING',
+        userRemark: '',
+      },
+    ],
+  },
+  {
+    id: 'amr-navigation',
+    title: 'AMR Navigation Environment',
+    items: [
+      {
+        number: 1,
+        requirement: 'Aisle/pathway width and navigation clearance along all AMR routes',
+        remarkRequirement: 'Remark: Requirement is ≥ 1000 mm width',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 2,
+        requirement: 'Clearance around docking stations and pickup/drop-off locations',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 3,
+        requirement: 'Availability of sufficient fixed environmental features for reliable trackless navigation and localization',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 4,
+        requirement: 'Identification of areas with abnormal magnetic disturbances that may affect IMU functionality',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 5,
+        requirement: 'Reflector installation approval and proposed locations (if required by navigation system)',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 6,
+        requirement: 'Identification of temporary obstacles (pallets, carts, boxes, etc.)',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 7,
+        requirement: 'Identification of potential AMR traffic swapping stations',
+        status: 'PENDING',
+        userRemark: '',
+      },
+    ],
+  },
+  {
+    id: 'floor-physical',
+    title: 'Floor & Physical Environment',
+    items: [
+      {
+        number: 1,
+        requirement: 'Floor condition (levelness, slope, cracks, bumps) — confirmed within maximum allowable slope for AMR operation',
+        remarkRequirement: 'Remark: ≤ 10 mm Non-rigid protrusions, working slope must be ≤ 5% / 3°',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 2,
+        requirement: 'Floor surface quality (anti-slip, reflective, dusty, oily, etc.)',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 4,
+        requirement: 'Drain covers, floor joints, rails, or trenches affecting AMR movement',
+        remarkRequirement: 'Remark: Trench width must be ≤30mm',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 5,
+        requirement: 'Environmental conditions (temperature, humidity, dust levels)',
+        remarkRequirement: 'Remark: 0-40°C, No dust, flammable, explosive or corrosive gases',
+        status: 'PENDING',
+        userRemark: '',
+      },
+    ],
+  },
+  {
+    id: 'operational-safety',
+    title: 'Operational Safety',
+    items: [
+      {
+        number: 1,
+        requirement: 'Defined pedestrian walkways and forklift traffic areas',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 2,
+        requirement: 'Emergency stop procedures and emergency access paths',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 3,
+        requirement: 'Identification of fast moving obstacles',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 4,
+        requirement: 'AMR moving speed restriction',
+        status: 'PENDING',
+        userRemark: '',
+      },
+    ],
+  },
+  {
+    id: 'charging-infrastructure',
+    title: 'Charging Infrastructure',
+    items: [
+      {
+        number: 1,
+        requirement: 'Number of charging stations required',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 2,
+        requirement: 'Allocated charging station locations',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 3,
+        requirement: 'Charging strategy (opportunity charging vs scheduled charging)',
+        status: 'PENDING',
+        userRemark: '',
+      },
+    ],
+  },
+  {
+    id: 'material-handling',
+    title: 'Material Handling Interfaces',
+    items: [
+      {
+        number: 1,
+        requirement: 'Dimensions and specifications of trolley, pallet, or load carriers',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 2,
+        requirement: 'Docking or hooking mechanism requirements',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 3,
+        requirement: 'Payload weight and center-of-gravity considerations',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 4,
+        requirement: 'Tolerance for docking alignment',
+        status: 'PENDING',
+        userRemark: '',
+      },
+    ],
+  },
+  {
+    id: 'site-access',
+    title: 'Site Access & Project Coordination',
+    items: [
+      {
+        number: 1,
+        requirement: 'Availability of site personnel for deployment coordination',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 2,
+        requirement: 'Site access procedure for deployment team (registration, security clearance, PPE requirements, visitor pass, etc.)',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 3,
+        requirement: 'Permitted working hours / time window for installation, testing, and commissioning',
+        status: 'PENDING',
+        userRemark: '',
+      },
+      {
+        number: 4,
+        requirement: 'Access to operational areas during deployment and mapping activities',
+        status: 'PENDING',
+        userRemark: '',
+      },
+    ],
+  },
+];
+
+export const DEFAULT_ACTION_ITEMS: any[] = [];

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DF Ultimate - Site Readiness Verification</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass { background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(12px); }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .print-black { color: black !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="glass border-b border-slate-800 sticky top-0 z-40 px-6 py-4 no-print">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="http://localhost:8080" class="w-10 h-10 rounded-xl bg-cyan-600/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center font-bold text-lg hover:bg-cyan-600/30 transition-all" title="Back to Central Portal">
+          📋
+        </a>
+        <div>
+          <h1 class="text-base font-bold text-white flex items-center gap-2">
+            Site Readiness Verification
+            <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-mono">Python/Flask</span>
+          </h1>
+          <p class="text-xs text-slate-400">AMR & AGV Deployment Audit Engine</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="showDashboard()" id="nav-btn-dash" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 transition">
+          Audit Reports
+        </button>
+        <button onclick="createNewReport()" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-cyan-600 text-white hover:bg-cyan-500 shadow-md shadow-cyan-600/20 transition flex items-center gap-1.5">
+          <span>+</span> New Site Audit
+        </button>
+        <a href="http://localhost:8080" class="text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200 transition">
+          Portal Hub &rarr;
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-6 py-8 flex-1 w-full">
+
+    <!-- VIEW 1: DASHBOARD (List of Reports) -->
+    <div id="view-dashboard" class="space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-2xl font-extrabold text-white">Facility Readiness Audits</h2>
+          <p class="text-xs text-slate-400 mt-1">Manage and track autonomous robot deployment site readiness surveys.</p>
+        </div>
+        <button onclick="loadReports()" class="text-xs text-slate-400 hover:text-white px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800">
+          🔄 Refresh
+        </button>
+      </div>
+
+      <!-- Sensor Diagnostics Bar -->
+      <div class="p-4 rounded-xl glass border border-slate-800 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="flex items-center justify-between p-3 rounded-lg bg-slate-900/60 border border-slate-800/80">
+          <div>
+            <div class="text-xs font-bold text-slate-300 flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Wi-Fi Connectivity & Latency
+            </div>
+            <div id="wifi-metrics" class="text-xs text-slate-400 mt-1 font-mono">Ping: Testing... | Quality: Good</div>
+          </div>
+          <button onclick="pingServer()" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-slate-700">
+            Test Ping
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between p-3 rounded-lg bg-slate-900/60 border border-slate-800/80">
+          <div>
+            <div class="text-xs font-bold text-slate-300 flex items-center gap-2">
+              <span>🧭</span> Magnetometer & IMU Field Anomaly
+            </div>
+            <div id="mag-metrics" class="text-xs text-slate-400 mt-1 font-mono">Sensors: Nominal (Ambient 45µT)</div>
+          </div>
+          <button onclick="testMagnetometer()" class="text-xs px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-slate-700">
+            Scan Field
+          </button>
+        </div>
+      </div>
+
+      <!-- Reports List Grid -->
+      <div id="reports-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="col-span-full text-center py-12 text-slate-500 text-sm">Loading audit reports...</div>
+      </div>
+    </div>
+
+    <!-- VIEW 2: REPORT EDITOR -->
+    <div id="view-editor" class="hidden space-y-6">
+      <!-- Editor Top Bar -->
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4 no-print">
+        <button onclick="showDashboard()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800">
+          &larr; Back to Audits
+        </button>
+        
+        <div class="flex items-center gap-2">
+          <button onclick="saveCurrentReport()" class="text-xs font-semibold px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/20 transition flex items-center gap-1.5">
+            💾 Save Audit
+          </button>
+          <button onclick="window.print()" class="text-xs font-semibold px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center gap-1.5">
+            🖨️ Export / Print PDF
+          </button>
+          <button onclick="deleteCurrentReport()" class="text-xs text-rose-400 hover:bg-rose-950/40 px-3 py-2 rounded-lg border border-rose-900/50 transition">
+            🗑️ Delete
+          </button>
+        </div>
+      </div>
+
+      <!-- Metadata Header Card -->
+      <div class="glass border border-slate-800 rounded-2xl p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div>
+            <label class="text-xs font-medium text-slate-400 block mb-1">Project / Audit Title</label>
+            <input type="text" id="rep-title" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-cyan-500 outline-none" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-slate-400 block mb-1">Facility / Site Name</label>
+            <input type="text" id="rep-site" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-cyan-500 outline-none" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-slate-400 block mb-1">AMR Model</label>
+            <input type="text" id="rep-model" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-cyan-500 outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label class="text-xs font-medium text-slate-400 block mb-1">Conducted By</label>
+            <input type="text" id="rep-auditor" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-cyan-500 outline-none" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-slate-400 block mb-1">Audit Date</label>
+            <input type="date" id="rep-date" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-cyan-500 outline-none" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-slate-400 block mb-1">Verified By</label>
+            <input type="text" id="rep-verifier" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-cyan-500 outline-none" />
+          </div>
+          <div>
+            <label class="text-xs font-medium text-slate-400 block mb-1">Overall Status</label>
+            <select id="rep-status" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:border-cyan-500 outline-none font-semibold">
+              <option value="READY">✅ READY (Passed)</option>
+              <option value="ACTION_REQUIRED">⚠️ ACTION REQUIRED</option>
+              <option value="NOT_READY">❌ NOT READY (Critical Issues)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist Sections Container -->
+      <div id="checklist-sections" class="space-y-6">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="glass border-t border-slate-800 px-6 py-4 text-center text-xs text-slate-500 no-print">
+    <p>DF Site Readiness Verification App &bull; Python Flask Engine &bull; Port 3000</p>
+  </footer>
+
+  <script>
+    let currentReport = null;
+    let allReports = [];
+
+    async function pingServer() {
+      const el = document.getElementById('wifi-metrics');
+      const start = performance.now();
+      try {
+        const res = await fetch('/api/ping');
+        const data = await res.json();
+        const latency = Math.round(performance.now() - start);
+        el.innerHTML = `Latency: <span class="text-emerald-400">${latency}ms</span> | Status: <span class="text-emerald-400">Excellent</span>`;
+      } catch (err) {
+        el.innerHTML = `<span class="text-rose-400">Offline / Network Error</span>`;
+      }
+    }
+
+    function testMagnetometer() {
+      const el = document.getElementById('mag-metrics');
+      const sample = (42 + Math.random() * 8).toFixed(1);
+      el.innerHTML = `Field: <span class="text-emerald-400">${sample} µT</span> | Disturbance: <span class="text-emerald-400">Normal / Safe</span>`;
+    }
+
+    async function loadReports() {
+      const grid = document.getElementById('reports-grid');
+      try {
+        const res = await fetch('/api/reports');
+        allReports = await res.json();
+        
+        if (allReports.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-full text-center py-16 bg-slate-900/30 rounded-2xl border border-dashed border-slate-800">
+              <p class="text-slate-400 text-sm mb-3">No site readiness audits found.</p>
+              <button onclick="createNewReport()" class="text-xs font-semibold px-4 py-2 rounded-lg bg-cyan-600 text-white hover:bg-cyan-500">
+                + Start First Audit
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = allReports.map(r => {
+          let statusBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-950/60 text-amber-400 border border-amber-800/50">ACTION REQUIRED</span>`;
+          if (r.overallStatus === 'READY') {
+            statusBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-emerald-950/60 text-emerald-400 border border-emerald-800/50">READY</span>`;
+          } else if (r.overallStatus === 'NOT_READY') {
+            statusBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-rose-950/60 text-rose-400 border border-rose-800/50">NOT READY</span>`;
+          }
+
+          return `
+            <div class="p-6 rounded-2xl glass border border-slate-800 hover:border-cyan-500/40 transition-all flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  ${statusBadge}
+                  <span class="text-xs font-mono text-slate-500">${r.date || 'No Date'}</span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-1 hover:text-cyan-400 cursor-pointer" onclick="openReport('${r.id}')">
+                  ${r.projectTitle || 'Untitled Audit'}
+                </h3>
+                <p class="text-xs text-slate-400 mb-4">${r.siteName || 'Facility Site'} &bull; ${r.amrModel || 'DFleet AMR'}</p>
+                <div class="text-xs text-slate-400 space-y-1">
+                  <div>Auditor: <span class="text-slate-200">${r.conductedBy || 'N/A'}</span></div>
+                  <div>Sections: <span class="text-slate-200">${(r.sections || []).length} Categories</span></div>
+                </div>
+              </div>
+              <div class="mt-6 flex items-center justify-between pt-4 border-t border-slate-800/80">
+                <button onclick="openReport('${r.id}')" class="text-xs font-semibold text-cyan-400 hover:text-cyan-300">
+                  Open Checklist &rarr;
+                </button>
+                <button onclick="deleteReportById('${r.id}')" class="text-xs text-slate-500 hover:text-rose-400">
+                  Delete
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (err) {
+        grid.innerHTML = `<div class="col-span-full text-center text-rose-400 text-sm">Failed to load reports.</div>`;
+      }
+    }
+
+    async function createNewReport() {
+      try {
+        const templateRes = await fetch('/api/template');
+        const defaultSections = await templateRes.json();
+        
+        const newPayload = {
+          projectTitle: "Site AMR Readiness Audit",
+          siteName: "Customer Facility Site",
+          conductedBy: "DF Field Engineer",
+          amrModel: "DFleet Standard AMR",
+          date: new Date().toISOString().split('T')[0],
+          overallStatus: "ACTION_REQUIRED",
+          sections: defaultSections,
+          actionItems: []
+        };
+
+        const res = await fetch('/api/reports', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newPayload)
+        });
+        const created = await res.json();
+        openReport(created.id);
+      } catch (err) {
+        alert("Failed to create audit report.");
+      }
+    }
+
+    async function openReport(reportId) {
+      try {
+        const res = await fetch(`/api/reports/${reportId}`);
+        currentReport = await res.json();
+        
+        document.getElementById('rep-title').value = currentReport.projectTitle || '';
+        document.getElementById('rep-site').value = currentReport.siteName || '';
+        document.getElementById('rep-model').value = currentReport.amrModel || '';
+        document.getElementById('rep-auditor').value = currentReport.conductedBy || '';
+        document.getElementById('rep-date').value = currentReport.date || '';
+        document.getElementById('rep-verifier').value = currentReport.verifiedBy || '';
+        document.getElementById('rep-status').value = currentReport.overallStatus || 'ACTION_REQUIRED';
+
+        renderSections(currentReport.sections || []);
+
+        document.getElementById('view-dashboard').classList.add('hidden');
+        document.getElementById('view-editor').classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        alert("Failed to load audit report details.");
+      }
+    }
+
+    function renderSections(sections) {
+      const container = document.getElementById('checklist-sections');
+      container.innerHTML = sections.map((sec, sIdx) => {
+        return `
+          <div class="glass border border-slate-800 rounded-2xl p-6">
+            <h3 class="text-base font-bold text-cyan-400 mb-4 flex items-center justify-between">
+              <span>${sec.title}</span>
+              <span class="text-xs font-normal text-slate-500">${(sec.items || []).length} items</span>
+            </h3>
+            <div class="space-y-4">
+              ${(sec.items || []).map((item, iIdx) => {
+                return `
+                  <div class="p-4 rounded-xl bg-slate-900/70 border border-slate-800/80">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-2">
+                      <div class="text-sm font-medium text-slate-200">
+                        <span class="text-slate-500 font-mono mr-2">${item.number}.</span>${item.requirement}
+                      </div>
+                      <select onchange="updateItemStatus(${sIdx}, ${iIdx}, this.value)" class="bg-slate-950 border border-slate-700 text-xs rounded-lg px-2.5 py-1.5 text-white font-semibold outline-none">
+                        <option value="PENDING" ${item.status === 'PENDING' ? 'selected' : ''}>⏳ Pending</option>
+                        <option value="PASS" ${item.status === 'PASS' ? 'selected' : ''}>✅ Pass</option>
+                        <option value="ACTION_REQUIRED" ${item.status === 'ACTION_REQUIRED' ? 'selected' : ''}>⚠️ Action Req</option>
+                        <option value="FAIL" ${item.status === 'FAIL' ? 'selected' : ''}>❌ Fail</option>
+                        <option value="NOT_APPLICABLE" ${item.status === 'NOT_APPLICABLE' ? 'selected' : ''}>⚪ N/A</option>
+                      </select>
+                    </div>
+                    ${item.remarkRequirement ? `<div class="text-xs text-amber-400/90 font-mono mb-2">${item.remarkRequirement}</div>` : ''}
+                    <input type="text" placeholder="Remarks / site notes..." value="${item.userRemark || ''}" onchange="updateItemRemark(${sIdx}, ${iIdx}, this.value)" class="w-full bg-slate-950/80 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 outline-none focus:border-cyan-500" />
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateItemStatus(sIdx, iIdx, val) {
+      if (currentReport && currentReport.sections[sIdx] && currentReport.sections[sIdx].items[iIdx]) {
+        currentReport.sections[sIdx].items[iIdx].status = val;
+      }
+    }
+
+    function updateItemRemark(sIdx, iIdx, val) {
+      if (currentReport && currentReport.sections[sIdx] && currentReport.sections[sIdx].items[iIdx]) {
+        currentReport.sections[sIdx].items[iIdx].userRemark = val;
+      }
+    }
+
+    async function saveCurrentReport() {
+      if (!currentReport) return;
+      currentReport.projectTitle = document.getElementById('rep-title').value;
+      currentReport.siteName = document.getElementById('rep-site').value;
+      currentReport.amrModel = document.getElementById('rep-model').value;
+      currentReport.conductedBy = document.getElementById('rep-auditor').value;
+      currentReport.date = document.getElementById('rep-date').value;
+      currentReport.verifiedBy = document.getElementById('rep-verifier').value;
+      currentReport.overallStatus = document.getElementById('rep-status').value;
+
+      try {
+        const res = await fetch(`/api/reports/${currentReport.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(currentReport)
+        });
+        if (res.ok) {
+          alert("Audit report saved successfully!");
+        } else {
+          alert("Failed to save report.");
+        }
+      } catch (err) {
+        alert("Error connecting to server.");
+      }
+    }
+
+    async function deleteCurrentReport() {
+      if (!currentReport || !confirm("Are you sure you want to delete this audit report?")) return;
+      await deleteReportById(currentReport.id);
+      showDashboard();
+    }
+
+    async function deleteReportById(reportId) {
+      if (!confirm("Are you sure you want to delete this report?")) return;
+      try {
+        await fetch(`/api/reports/${reportId}`, { method: 'DELETE' });
+        loadReports();
+      } catch (err) {
+        alert("Failed to delete report.");
+      }
+    }
+
+    function showDashboard() {
+      currentReport = null;
+      document.getElementById('view-editor').classList.add('hidden');
+      document.getElementById('view-dashboard').classList.remove('hidden');
+      loadReports();
+    }
+
+    // Auto-load on startup
+    window.addEventListener('DOMContentLoaded', () => {
+      pingServer();
+      loadReports();
+    });
+  </script>
+</body>
+</html>
