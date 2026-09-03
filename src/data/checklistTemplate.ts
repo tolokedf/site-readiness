@@ -79,8 +79,7 @@ export const DEFAULT_CHECKLIST_SECTIONS: ChecklistSection[] = [
     items: [
       {
         number: 1,
-        requirement: 'Aisle/pathway width and navigation clearance along all AMR routes',
-        remarkRequirement: 'Remark: Requirement is ≥ 1000 mm width',
+        requirement: 'Aisle/pathway width and navigation clearance along all AMR routes (Requirement is ≥ 1000 mm width)',
         status: 'PENDING',
         userRemark: '',
       },
@@ -128,8 +127,7 @@ export const DEFAULT_CHECKLIST_SECTIONS: ChecklistSection[] = [
     items: [
       {
         number: 1,
-        requirement: 'Floor condition (levelness, slope, cracks, bumps) — confirmed within maximum allowable slope for AMR operation',
-        remarkRequirement: 'Remark: ≤ 10 mm Non-rigid protrusions, working slope must be ≤ 5% / 3°',
+        requirement: 'Floor condition (levelness, slope, cracks, bumps) — confirmed within maximum allowable slope for AMR operation (≤ 10 mm Non-rigid protrusions, working slope must be ≤ 5% / 3°)',
         status: 'PENDING',
         userRemark: '',
       },
@@ -141,15 +139,13 @@ export const DEFAULT_CHECKLIST_SECTIONS: ChecklistSection[] = [
       },
       {
         number: 4,
-        requirement: 'Drain covers, floor joints, rails, or trenches affecting AMR movement',
-        remarkRequirement: 'Remark: Trench width must be ≤30mm',
+        requirement: 'Drain covers, floor joints, rails, or trenches affecting AMR movement (Trench width must be ≤ 30mm)',
         status: 'PENDING',
         userRemark: '',
       },
       {
         number: 5,
-        requirement: 'Environmental conditions (temperature, humidity, dust levels)',
-        remarkRequirement: 'Remark: 0-40°C, No dust, flammable, explosive or corrosive gases',
+        requirement: 'Environmental conditions (temperature, humidity, dust levels) (0-40°C, No dust, flammable, explosive or corrosive gases)',
         status: 'PENDING',
         userRemark: '',
       },

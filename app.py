@@ -35,26 +35,42 @@ os.makedirs(UPLOADS_DIR, exist_ok=True)
 
 def load_template_sections():
     if CHECKLIST_FILE.exists():
-        with open(CHECKLIST_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+        try:
+            with open(CHECKLIST_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error loading checklist template: {e}")
     return []
 
 def read_db():
     if not DB_FILE.exists():
-        initial = {"reports": []}
+        initial = {"users": [], "reports": []}
         write_db(initial)
         return initial
     try:
         with open(DB_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except Exception:
-        initial = {"reports": []}
+            data = json.load(f)
+            if not isinstance(data, dict):
+                data = {"reports": []}
+            if "reports" not in data:
+                data["reports"] = []
+            return data
+    except Exception as e:
+        print(f"Error reading db.json: {e}")
+        initial = {"users": [], "reports": []}
         write_db(initial)
         return initial
 
 def write_db(data):
-    with open(DB_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2)
+    try:
+        temp_file = DATA_DIR / "db.json.tmp"
+        with open(temp_file, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
+        temp_file.replace(DB_FILE)
+    except Exception as e:
+        print(f"Error writing to db.json: {e}")
+        with open(DB_FILE, "w", encoding="utf-8") as f:
+            json.dump(data, f, indent=2)
 
 # ==================== WEB PAGES ====================
 
@@ -87,47 +103,72 @@ def get_template():
 @app.route("/api/reports", methods=["GET", "POST"])
 def reports_handler():
     db = read_db()
+    reports = db.setdefault("reports", [])
+
     if request.method == "GET":
-        sorted_reports = sorted(db.get("reports", []), key=lambda r: r.get("updatedAt", r.get("date", "")), reverse=True)
+        sorted_reports = sorted(
+            reports,
+            key=lambda r: r.get("updatedAt", r.get("date", "")),
+            reverse=True
+        )
         return jsonify(sorted_reports)
 
     elif request.method == "POST":
         data = request.get_json(force=True) or {}
-        report_id = data.get("id") or f"rep_{int(time.time())}_{uuid.uuid4().hex[:6]}"
-        
-        sections = data.get("sections")
-        if not sections or len(sections) == 0:
-            sections = load_template_sections()
+        report_id = data.get("id")
 
-        new_report = {
-            "id": report_id,
-            "projectTitle": data.get("projectTitle", "Site AMR Readiness Audit"),
-            "siteName": data.get("siteName", "Customer Facility Site"),
-            "conductedBy": data.get("conductedBy", "DF Field Engineer"),
-            "customerName": data.get("customerName", "Customer Project Team"),
-            "date": data.get("date", datetime.now().strftime("%Y-%m-%d")),
-            "amrModel": data.get("amrModel", "DFleet Standard AGV/AMR"),
-            "sections": sections,
-            "actionItems": data.get("actionItems", []),
-            "verifiedBy": data.get("verifiedBy", ""),
-            "verificationDate": data.get("verificationDate", datetime.now().strftime("%Y-%m-%d")),
-            "verifierDesignation": data.get("verifierDesignation", "DF Robotics Specialist"),
-            "overallStatus": data.get("overallStatus", "ACTION_REQUIRED"),
-            "notes": data.get("notes", ""),
-            "createdAt": data.get("createdAt") or datetime.utcnow().isoformat() + "Z",
-            "updatedAt": datetime.utcnow().isoformat() + "Z"
-        }
+        # Check if report already exists in database (UPSERT logic to prevent duplicates on save)
+        existing_idx = None
+        if report_id:
+            existing_idx = next((i for i, r in enumerate(reports) if r.get("id") == report_id), None)
 
-        db.setdefault("reports", []).append(new_report)
-        write_db(db)
-        return jsonify(new_report), 201
+        if existing_idx is not None:
+            # Update existing report in-place
+            existing = reports[existing_idx]
+            existing.update(data)
+            existing["id"] = report_id
+            existing["updatedAt"] = datetime.utcnow().isoformat() + "Z"
+            write_db(db)
+            return jsonify(existing), 200
+        else:
+            # Create a brand new report record
+            if not report_id:
+                report_id = f"rep_{int(time.time())}_{uuid.uuid4().hex[:6]}"
+
+            sections = data.get("sections")
+            if not sections or len(sections) == 0:
+                sections = load_template_sections()
+
+            new_report = {
+                "id": report_id,
+                "projectTitle": data.get("projectTitle", "Site AMR Readiness Audit"),
+                "siteName": data.get("siteName", "Customer Facility Site"),
+                "conductedBy": data.get("conductedBy", "DF Field Engineer"),
+                "customerName": data.get("customerName", "Customer Project Team"),
+                "date": data.get("date", datetime.now().strftime("%Y-%m-%d")),
+                "amrModel": data.get("amrModel", "DFleet Standard AGV/AMR"),
+                "sections": sections,
+                "actionItems": data.get("actionItems", []),
+                "verifiedBy": data.get("verifiedBy", ""),
+                "verificationDate": data.get("verificationDate", datetime.now().strftime("%Y-%m-%d")),
+                "verifierDesignation": data.get("verifierDesignation", "DF Robotics Specialist"),
+                "overallStatus": data.get("overallStatus", "ACTION_REQUIRED"),
+                "signature": data.get("signature", ""),
+                "notes": data.get("notes", ""),
+                "createdAt": data.get("createdAt") or datetime.utcnow().isoformat() + "Z",
+                "updatedAt": datetime.utcnow().isoformat() + "Z"
+            }
+
+            reports.append(new_report)
+            write_db(db)
+            return jsonify(new_report), 201
 
 @app.route("/api/reports/<report_id>", methods=["GET", "PUT", "DELETE"])
 def single_report_handler(report_id):
     db = read_db()
     reports = db.get("reports", [])
     report_idx = next((i for i, r in enumerate(reports) if r.get("id") == report_id), None)
-    
+
     if request.method == "GET":
         if report_idx is None:
             return jsonify({"error": "Report not found"}), 404
@@ -142,7 +183,7 @@ def single_report_handler(report_id):
         existing["id"] = report_id
         existing["updatedAt"] = datetime.utcnow().isoformat() + "Z"
         write_db(db)
-        return jsonify(existing)
+        return jsonify(existing), 200
 
     elif request.method == "DELETE":
         if report_idx is None:
@@ -153,18 +194,18 @@ def single_report_handler(report_id):
 
 @app.route("/api/upload-photo", methods=["POST"])
 def upload_photo():
-    """Uploads a section evidence photo (Maximum 1 per section)."""
+    """Uploads a remark evidence photo (Maximum 1 per remark)."""
     if "file" not in request.files:
         return jsonify({"error": "No file uploaded"}), 400
     file = request.files["file"]
     if not file or not file.filename:
         return jsonify({"error": "No file selected"}), 400
-        
-    safe_fn = secure_filename(file.filename) or "section_photo.jpg"
-    unique_fn = f"sec-{int(time.time())}-{uuid.uuid4().hex[:6]}-{safe_fn}"
+
+    safe_fn = secure_filename(file.filename) or "remark_photo.jpg"
+    unique_fn = f"photo-{int(time.time())}-{uuid.uuid4().hex[:6]}-{safe_fn}"
     save_path = UPLOADS_DIR / unique_fn
     file.save(str(save_path))
-    
+
     return jsonify({
         "url": f"/uploads/{unique_fn}",
         "filename": unique_fn,
@@ -177,7 +218,7 @@ def export_pdf(report_id):
     report = next((r for r in db.get("reports", []) if r.get("id") == report_id), None)
     if not report:
         return jsonify({"error": "Report not found"}), 404
-        
+
     try:
         pdf_bytes = generate_site_readiness_pdf(report)
         response = make_response(pdf_bytes)
@@ -186,6 +227,7 @@ def export_pdf(report_id):
         response.headers['Content-Disposition'] = f'inline; filename="{filename}"'
         return response
     except Exception as e:
+        print(f"Failed to generate PDF: {e}")
         return jsonify({"error": f"Failed to generate PDF: {str(e)}"}), 500
 
 if __name__ == "__main__":
