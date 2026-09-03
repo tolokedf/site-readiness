@@ -25,10 +25,15 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "df-site-readiness-secret-2026")
 PORT = int(os.environ.get("PORT", 3000))
 
-DATA_DIR = BASE_DIR / "data"
+ROOT_DATABASE_DIR = BASE_DIR.parent / "Database" / "site_readiness"
+if ROOT_DATABASE_DIR.parent.exists():
+    DATA_DIR = ROOT_DATABASE_DIR
+else:
+    DATA_DIR = BASE_DIR / "data"
+
 UPLOADS_DIR = DATA_DIR / "uploads"
 DB_FILE = DATA_DIR / "db.json"
-CHECKLIST_FILE = DATA_DIR / "checklist_template.json"
+CHECKLIST_FILE = BASE_DIR / "data" / "checklist_template.json"
 
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(UPLOADS_DIR, exist_ok=True)
