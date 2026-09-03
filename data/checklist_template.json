@@ -2,268 +2,308 @@
   {
     "id": "network-it",
     "title": "Network & IT Infrastructure",
+    "photo": null,
     "items": [
       {
-        "number": 1,
+        "number": "1.0",
         "requirement": "Network/Wi-Fi coverage, availability, and stability across all AMR operational areas (including docking and charging zones)",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 2,
+        "number": "2.0",
         "requirement": "Static IP address allocation for AMRs, DFleet and Remote IO",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 3,
+        "number": "3.0",
         "requirement": "MAC address registration or network whitelist requirements",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 4,
+        "number": "4.0",
         "requirement": "Network security restrictions (firewall rules, VLANs, port access)",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 5,
+        "number": "5.0",
         "requirement": "Accessibility to required system interfaces (ERP, WMS, MES, REST API, database, etc.)",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 6,
+        "number": "6.0",
         "requirement": "Availability of IT personnel for network configuration and troubleshooting",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 7,
+        "number": "7.0",
         "requirement": "Allocated location for DFleet server",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       }
     ]
   },
   {
     "id": "power-electrical",
     "title": "Power & Electrical Requirements",
+    "photo": null,
     "items": [
       {
-        "number": 1,
+        "number": "1.0",
         "requirement": "Power specifications (voltage, phase, current capacity)",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 2,
+        "number": "2.0",
         "requirement": "Power supply availability for DFleet server",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 3,
+        "number": "3.0",
         "requirement": "Availability of UPS backup for servers, networking equipment, or control systems (if required)",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       }
     ]
   },
   {
-    "id": "amr-navigation",
+    "id": "navigation-env",
     "title": "AMR Navigation Environment",
+    "photo": null,
     "items": [
       {
-        "number": 1,
+        "number": "1.0",
         "requirement": "Aisle/pathway width and navigation clearance along all AMR routes",
-        "remarkRequirement": "Remark: Requirement is \u2265 1000 mm width",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": "Requirement is \u2265 1000 mm width"
       },
       {
-        "number": 2,
+        "number": "2.0",
         "requirement": "Clearance around docking stations and pickup/drop-off locations",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 3,
+        "number": "3.0",
         "requirement": "Availability of sufficient fixed environmental features for reliable trackless navigation and localization",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 4,
+        "number": "4.0",
         "requirement": "Identification of areas with abnormal magnetic disturbances that may affect IMU functionality",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 5,
+        "number": "5.0",
         "requirement": "Reflector installation approval and proposed locations (if required by navigation system)",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 6,
+        "number": "6.0",
         "requirement": "Identification of temporary obstacles (pallets, carts, boxes, etc.)",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 7,
+        "number": "7.0",
         "requirement": "Identification of potential AMR traffic swapping stations",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       }
     ]
   },
   {
     "id": "floor-physical",
     "title": "Floor & Physical Environment",
+    "photo": null,
     "items": [
       {
-        "number": 1,
+        "number": "1.0",
         "requirement": "Floor condition (levelness, slope, cracks, bumps) \u2014 confirmed within maximum allowable slope for AMR operation",
-        "remarkRequirement": "Remark: \u2264 10 mm Non-rigid protrusions, working slope must be \u2264 5% / 3\u00b0",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": "\u2264 10 mm Non-rigid protrusions, working slope must be \u2264 5% / 3\u00b0"
       },
       {
-        "number": 2,
+        "number": "2.0",
         "requirement": "Floor surface quality (anti-slip, reflective, dusty, oily, etc.)",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 4,
+        "number": "3.0",
         "requirement": "Drain covers, floor joints, rails, or trenches affecting AMR movement",
-        "remarkRequirement": "Remark: Trench width must be \u226430mm",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": "Trench width must be \u2264 30mm"
       },
       {
-        "number": 5,
+        "number": "4.0",
         "requirement": "Environmental conditions (temperature, humidity, dust levels)",
-        "remarkRequirement": "Remark: 0-40\u00b0C, No dust, flammable, explosive or corrosive gases",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": "0-40\u00b0C, No dust, flammable, explosive or corrosive gases"
       }
     ]
   },
   {
     "id": "operational-safety",
     "title": "Operational Safety",
+    "photo": null,
     "items": [
       {
-        "number": 1,
+        "number": "1.0",
         "requirement": "Defined pedestrian walkways and forklift traffic areas",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 2,
+        "number": "2.0",
         "requirement": "Emergency stop procedures and emergency access paths",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 3,
+        "number": "3.0",
         "requirement": "Identification of fast moving obstacles",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 4,
+        "number": "4.0",
         "requirement": "AMR moving speed restriction",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       }
     ]
   },
   {
-    "id": "charging-infrastructure",
+    "id": "charging-infra",
     "title": "Charging Infrastructure",
+    "photo": null,
     "items": [
       {
-        "number": 1,
+        "number": "1.0",
         "requirement": "Number of charging stations required",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 2,
+        "number": "2.0",
         "requirement": "Allocated charging station locations",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 3,
+        "number": "3.0",
         "requirement": "Charging strategy (opportunity charging vs scheduled charging)",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       }
     ]
   },
   {
     "id": "material-handling",
     "title": "Material Handling Interfaces",
+    "photo": null,
     "items": [
       {
-        "number": 1,
+        "number": "1.0",
         "requirement": "Dimensions and specifications of trolley, pallet, or load carriers",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 2,
+        "number": "2.0",
         "requirement": "Docking or hooking mechanism requirements",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 3,
+        "number": "3.0",
         "requirement": "Payload weight and center-of-gravity considerations",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 4,
+        "number": "4.0",
         "requirement": "Tolerance for docking alignment",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       }
     ]
   },
   {
     "id": "site-access",
     "title": "Site Access & Project Coordination",
+    "photo": null,
     "items": [
       {
-        "number": 1,
+        "number": "1.0",
         "requirement": "Availability of site personnel for deployment coordination",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 2,
+        "number": "2.0",
         "requirement": "Site access procedure for deployment team (registration, security clearance, PPE requirements, visitor pass, etc.)",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 3,
+        "number": "3.0",
         "requirement": "Permitted working hours / time window for installation, testing, and commissioning",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       },
       {
-        "number": 4,
+        "number": "4.0",
         "requirement": "Access to operational areas during deployment and mapping activities",
         "status": "PENDING",
-        "userRemark": ""
+        "userRemark": "",
+        "defaultRemark": ""
       }
     ]
   }
