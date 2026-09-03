@@ -230,6 +230,30 @@ def export_pdf(report_id):
         print(f"Failed to generate PDF: {e}")
         return jsonify({"error": f"Failed to generate PDF: {str(e)}"}), 500
 
+def format_dmy(date_str):
+    if not date_str or not isinstance(date_str, str):
+        return '-'
+    parts = date_str.strip().split('-')
+    if len(parts) == 3 and len(parts[0]) == 4:
+        return f"{parts[2]}/{parts[1]}/{parts[0]}"
+    return date_str
+
+@app.route("/api/reports/<report_id>/html", methods=["GET"])
+def export_html(report_id):
+    db = read_db()
+    report = next((r for r in db.get("reports", []) if r.get("id") == report_id), None)
+    if not report:
+        return "Audit report not found", 404
+
+    # Format dates as DD/MM/YYYY for presentation in HTML view
+    report_copy = json.loads(json.dumps(report))
+    report_copy['date_dmy'] = format_dmy(report_copy.get('date'))
+    report_copy['verificationDate_dmy'] = format_dmy(report_copy.get('verificationDate') or report_copy.get('date'))
+    for act in report_copy.get('actionItems', []):
+        act['dueDate_dmy'] = format_dmy(act.get('dueDate'))
+
+    return render_template("report_html.html", report=report_copy)
+
 if __name__ == "__main__":
     print(f"🚀 Starting Site Readiness Verification Server (Python/Flask) on http://0.0.0.0:{PORT}")
     app.run(host="0.0.0.0", port=PORT, debug=True)

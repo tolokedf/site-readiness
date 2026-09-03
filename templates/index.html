@@ -306,18 +306,14 @@
         </button>
         
         <div class="flex flex-wrap items-center gap-2 self-stretch sm:self-auto justify-end">
-          <button id="btn-save-report" onclick="saveCurrentReport()" class="text-xs font-bold px-4 sm:px-5 py-2 rounded-full google-btn-primary shadow-sm flex items-center gap-1.5 active:scale-95">
-            <i id="btn-save-icon" class="fa-solid fa-floppy-disk text-[12px]"></i>
-            <span id="btn-save-text">Save Audit</span>
-          </button>
           <a id="btn-download-pdf" href="#" target="_blank" class="text-xs font-bold px-3.5 sm:px-4 py-2 rounded-full bg-[#1e8e3e] hover:bg-[#137333] text-white transition flex items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-file-pdf text-[12px]"></i>
             <span>Official PDF</span>
           </a>
-          <button onclick="window.print()" class="text-xs font-medium px-3.5 sm:px-4 py-2 rounded-full google-btn-outlined flex items-center gap-1.5">
-            <i class="fa-solid fa-print text-[12px]"></i>
-            <span class="hidden xs:inline">Print</span>
-          </button>
+          <a id="btn-export-html" href="#" target="_blank" class="text-xs font-semibold px-3.5 sm:px-4 py-2 rounded-full google-btn-outlined flex items-center gap-1.5 shadow-xs" title="View Standalone HTML Report">
+            <i class="fa-solid fa-code text-[12px] text-[var(--g-blue)]"></i>
+            <span>HTML Report</span>
+          </a>
           <button onclick="deleteCurrentReport()" class="text-xs font-medium text-[var(--g-red)] hover:bg-[var(--g-red-bg)] px-3 sm:px-3.5 py-2 rounded-full border border-[var(--g-red-border)] transition flex items-center gap-1.5">
             <i class="fa-solid fa-trash text-[11px]"></i>
             <span class="hidden xs:inline">Delete</span>
@@ -441,6 +437,14 @@
           </div>
           <p class="text-[11px] text-[var(--g-muted)] mt-1.5">Official verification signature drawn here is rendered in black ink and embedded directly into the ReportLab PDF.</p>
         </div>
+      </div>
+
+      <!-- Bottom Form Action: Primary Save Audit Button -->
+      <div class="flex flex-col sm:flex-row items-center justify-end gap-3 pt-2 pb-6">
+        <button id="btn-save-report" onclick="saveCurrentReport()" class="w-full sm:w-auto text-xs sm:text-sm font-bold px-8 py-3 rounded-full google-btn-primary shadow-md flex items-center justify-center gap-2 active:scale-95 transition">
+          <i id="btn-save-icon" class="fa-solid fa-floppy-disk text-[14px]"></i>
+          <span id="btn-save-text">Save Site Readiness Audit</span>
+        </button>
       </div>
 
     </div>
@@ -731,10 +735,16 @@
                   <i class="fa-solid fa-pen text-[10px]"></i>
                   <span>Edit</span>
                 </button>
-                <a href="/api/reports/${r.id}/pdf" target="_blank" class="text-xs font-semibold px-3.5 py-1.5 rounded-full bg-[#1e8e3e] hover:bg-[#137333] text-white transition flex items-center gap-1.5 shadow-sm">
-                  <i class="fa-solid fa-file-pdf text-[11px]"></i>
-                  <span>PDF</span>
-                </a>
+                <div class="flex items-center gap-1.5">
+                  <a href="/api/reports/${r.id}/html" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-full google-btn-outlined flex items-center gap-1.5 shadow-xs" title="View Standalone HTML Report">
+                    <i class="fa-solid fa-code text-[11px] text-[var(--g-blue)]"></i>
+                    <span>HTML</span>
+                  </a>
+                  <a href="/api/reports/${r.id}/pdf" target="_blank" class="text-xs font-semibold px-3.5 py-1.5 rounded-full bg-[#1e8e3e] hover:bg-[#137333] text-white transition flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-file-pdf text-[11px]"></i>
+                    <span>PDF</span>
+                  </a>
+                </div>
               </div>
             </div>
           `;
@@ -798,6 +808,7 @@
         document.getElementById('rep-verification-date').value = currentReport.verificationDate || currentReport.date || '';
         document.getElementById('rep-status').value = currentReport.overallStatus || 'ACTION_REQUIRED';
         document.getElementById('btn-download-pdf').href = `/api/reports/${currentReport.id}/pdf`;
+        document.getElementById('btn-export-html').href = `/api/reports/${currentReport.id}/html`;
 
         renderSections(currentReport.sections || []);
         renderActionItems(currentReport.actionItems || []);
@@ -1113,6 +1124,7 @@
         currentReport = await res.json();
 
         document.getElementById('btn-download-pdf').href = `/api/reports/${currentReport.id}/pdf`;
+        document.getElementById('btn-export-html').href = `/api/reports/${currentReport.id}/html`;
         showToast("Site Readiness Audit saved successfully!");
 
         if (saveIcon) saveIcon.className = "fa-solid fa-check text-[12px]";
