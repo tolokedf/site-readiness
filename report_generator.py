@@ -95,6 +95,14 @@ def create_styles():
 
     return styles
 
+def format_dmy(date_str) -> str:
+    if not date_str or not isinstance(date_str, str):
+        return '-'
+    parts = date_str.strip().split('-')
+    if len(parts) == 3 and len(parts[0]) == 4:
+        return f"{parts[2]}/{parts[1]}/{parts[0]}"
+    return date_str
+
 def generate_site_readiness_pdf(report: dict) -> bytes:
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
@@ -110,6 +118,7 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
     story = []
     
     # 1. Header
+    report_date_dmy = format_dmy(report.get('date', datetime.now().strftime('%Y-%m-%d')))
     header_data = [
         [
             Paragraph("<b>DF AUTOMATION & ROBOTICS</b>", ParagraphStyle('DFH', fontName='Helvetica-Bold', fontSize=11, textColor=CYAN_BRAND)),
@@ -117,7 +126,7 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
         ],
         [
             Paragraph("<b>SITE READINESS VERIFICATION CHECKLIST</b>", styles['DocTitle']),
-            Paragraph(f"<b>Date:</b> {report.get('date', datetime.now().strftime('%Y-%m-%d'))}", ParagraphStyle('DFDate', fontName='Helvetica', fontSize=7.5, textColor=TEXT_MUTED, alignment=2))
+            Paragraph(f"<b>Date:</b> {report_date_dmy}", ParagraphStyle('DFDate', fontName='Helvetica', fontSize=7.5, textColor=TEXT_MUTED, alignment=2))
         ]
     ]
     t_header = Table(header_data, colWidths=[370, 175])
@@ -138,13 +147,13 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
     
     meta_data = [
         [
-            Paragraph(f"<b>Project Title:</b> {report.get('projectTitle', 'AGV Site Assessment')}", styles['CellTextBold']),
-            Paragraph(f"<b>Conducted By:</b> {report.get('conductedBy', 'DF Field Engineer')}", styles['CellTextBold']),
-            Paragraph(f"<b>Date:</b> {report.get('date', '-')}", styles['CellTextBold'])
+            Paragraph(f"<b>Project Title:</b> {report.get('projectTitle') or '-'}", styles['CellTextBold']),
+            Paragraph(f"<b>Conducted By:</b> {report.get('conductedBy') or '-'}", styles['CellTextBold']),
+            Paragraph(f"<b>Date:</b> {format_dmy(report.get('date'))}", styles['CellTextBold'])
         ],
         [
-            Paragraph(f"<b>Site Name / Facility:</b> {report.get('siteName', '-')}", styles['CellText']),
-            Paragraph(f"<b>AMR Model:</b> {report.get('amrModel', 'DFleet Standard')}", styles['CellText']),
+            Paragraph(f"<b>Site Name / Facility:</b> {report.get('siteName') or '-'}", styles['CellText']),
+            Paragraph(f"<b>AMR Model:</b> {report.get('amrModel') or '-'}", styles['CellText']),
             Paragraph(f"<b>Readiness Verdict:</b> <font color='{stat_color.hexval()}'><b>{overall_stat.replace('_', ' ')}</b></font>", styles['CellTextBold'])
         ]
     ]
@@ -300,14 +309,14 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
                 Paragraph(str(idx), ParagraphStyle('AN', fontName='Helvetica', fontSize=7, alignment=1)),
                 Paragraph(act.get('description', act.get('actionItem', act.get('action', '-'))), styles['CellText']),
                 Paragraph(act.get('pic', '-'), styles['CellText']),
-                Paragraph(act.get('dueDate', act.get('date', '-')), ParagraphStyle('AD', fontName='Helvetica', fontSize=7, alignment=1))
+                Paragraph(format_dmy(act.get('dueDate') or act.get('date')), ParagraphStyle('AD', fontName='Helvetica', fontSize=7, alignment=1))
             ])
     else:
         act_data.append([
             Paragraph("1", ParagraphStyle('AN', fontName='Helvetica', fontSize=7, alignment=1)),
             Paragraph("No critical blockers recorded. Proceed with standard AMR mapping & commissioning schedule.", styles['CellText']),
             Paragraph("DF Deployment Team", styles['CellText']),
-            Paragraph(report.get('date', '-'), ParagraphStyle('AD', fontName='Helvetica', fontSize=7, alignment=1))
+            Paragraph(format_dmy(report.get('date')), ParagraphStyle('AD', fontName='Helvetica', fontSize=7, alignment=1))
         ])
         
     t_act = Table(act_data, colWidths=[28, 287, 120, 110])
@@ -326,9 +335,9 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
     story.append(KeepTogether([t_act, Spacer(1, 6)]))
 
     # 5. Verified By Sign-off Box (with Handwritten Signature embedding)
-    verified_by = report.get('verifiedBy', report.get('conductedBy', 'DF Certified Specialist'))
-    verifier_desig = report.get('verifierDesignation', 'Robotics Application Engineer')
-    v_date = report.get('verificationDate', report.get('date', datetime.now().strftime('%Y-%m-%d')))
+    verified_by = report.get('verifiedBy') or report.get('conductedBy') or '-'
+    verifier_desig = report.get('verifierDesignation') or '-'
+    v_date = format_dmy(report.get('verificationDate') or report.get('date') or datetime.now().strftime('%Y-%m-%d'))
     signature_data = report.get('signature', '')
     
     sig_img_flowable = None

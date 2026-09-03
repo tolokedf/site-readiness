@@ -61,8 +61,6 @@
       --g-border: #dadce0;
       --g-text: #202124;
       --g-muted: #5f6368;
-      --canvas-bg: #f8fafd;
-      --canvas-line: #1a73e8;
     }
 
     .dark {
@@ -86,8 +84,6 @@
       --g-border: #282a2c;
       --g-text: #e3e3e3;
       --g-muted: #9aa0a6;
-      --canvas-bg: #131314;
-      --canvas-line: #8ab4f8;
     }
 
     body, button, input, textarea, select {
@@ -208,42 +204,42 @@
   <div class="h-1 w-full bg-gradient-to-r from-[#4285F4] via-[#EA4335] via-[#FBBC04] to-[#34A853] sticky top-0 z-50 no-print"></div>
 
   <!-- Navigation Header (Google App Bar Style) -->
-  <header class="bg-[var(--g-surface)]/95 backdrop-blur-md border-b border-[var(--g-border)] sticky top-1 z-40 px-4 sm:px-6 py-3 shadow-[0_1px_2px_0_rgba(0,0,0,0.06)] no-print transition-colors duration-200">
+  <header class="bg-[var(--g-surface)]/95 backdrop-blur-md border-b border-[var(--g-border)] sticky top-1 z-40 px-3.5 sm:px-6 py-3 shadow-[0_1px_2px_0_rgba(0,0,0,0.06)] no-print transition-colors duration-200">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
       
-      <!-- Brand / Title -->
-      <div class="flex items-center gap-3.5">
-        <a href="http://localhost:8080" onclick="window.location.href='http://' + window.location.hostname + ':8080'; return false;" class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#00787c] to-[#00b5b8] p-1.5 flex items-center justify-center shadow-md shadow-[#00b5b8]/20 flex-shrink-0 hover:opacity-90 transition-all" title="Return to Central Portal Hub">
+      <!-- Brand / Title (Non-clickable Logo Badge, like dfchatbot) -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#00787c] to-[#00b5b8] p-1.5 flex items-center justify-center shadow-md shadow-[#00b5b8]/20 flex-shrink-0">
           <img src="/static/df_logo_white.png" alt="DF Automation & Robotics" class="w-full h-full object-contain">
-        </a>
+        </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-base sm:text-lg font-semibold tracking-tight text-[var(--g-text)]">
+            <h1 class="text-sm sm:text-base md:text-lg font-semibold tracking-tight text-[var(--g-text)]">
               Site Readiness Verification
             </h1>
-            <span class="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[var(--g-blue-bg)] text-[var(--g-blue)] border border-[var(--g-blue-border)] font-mono">
+            <span class="text-[10px] sm:text-[11px] font-medium px-2 sm:px-2.5 py-0.5 rounded-full bg-[var(--g-blue-bg)] text-[var(--g-blue)] border border-[var(--g-blue-border)] font-mono">
               FRM-FLD-003
             </span>
           </div>
-          <p class="text-xs text-[var(--g-muted)]">AMR & AGV Deployment Site Assessment Tool</p>
+          <p class="text-[11px] sm:text-xs text-[var(--g-muted)]">AMR & AGV Deployment Site Assessment Tool</p>
         </div>
       </div>
 
-      <!-- Action Buttons & Controls -->
-      <div class="flex items-center gap-2 sm:gap-2.5">
-        <button onclick="showDashboard()" id="nav-btn-dash" class="text-xs font-semibold px-4 py-2 rounded-full google-btn-tonal flex items-center gap-1.5 shadow-xs">
-          <i class="fa-solid fa-table-list text-[13px]"></i>
-          <span>Audit Reports</span>
+      <!-- Action Buttons & Controls (Optimized for Mobile/Tablet) -->
+      <div class="flex items-center gap-1.5 sm:gap-2.5">
+        <button onclick="showDashboard()" id="nav-btn-dash" class="text-xs font-semibold px-3 sm:px-4 py-2 rounded-full google-btn-tonal flex items-center gap-1.5 shadow-xs">
+          <i class="fa-solid fa-table-list text-[12px]"></i>
+          <span class="hidden xs:inline">Audit </span><span>Reports</span>
         </button>
-        <button onclick="createNewReport()" class="text-xs font-bold px-4 py-2 rounded-full google-btn-primary shadow-sm flex items-center gap-1.5">
+        <button onclick="createNewReport()" class="text-xs font-bold px-3 sm:px-4 py-2 rounded-full google-btn-primary shadow-sm flex items-center gap-1.5">
           <i class="fa-solid fa-plus text-[11px]"></i>
           <span><span class="hidden sm:inline">New Site </span>Audit</span>
         </button>
 
         <!-- Go back to Portal Button (Top Right) -->
-        <a href="http://localhost:8080" onclick="window.location.href='http://' + window.location.hostname + ':8080'; return false;" class="text-xs font-semibold px-3.5 py-2 rounded-full google-btn-outlined flex items-center gap-1.5 shadow-xs" title="Go back to Portal">
+        <a href="http://localhost:8080" onclick="window.location.href='http://' + window.location.hostname + ':8080'; return false;" class="text-xs font-semibold px-3 sm:px-3.5 py-2 rounded-full google-btn-outlined flex items-center gap-1.5 shadow-xs" title="Go back to Portal">
           <i class="fa-solid fa-arrow-left text-[11px]"></i>
-          <span>Portal</span>
+          <span class="hidden xs:inline">Portal</span>
         </a>
 
         <!-- Theme Switcher Dropdown (Light / Dark / System) -->
@@ -272,7 +268,7 @@
   </header>
 
   <!-- Main Content Container -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full">
+  <main class="max-w-7xl mx-auto px-3.5 sm:px-6 py-6 sm:py-8 flex-1 w-full">
 
     <!-- ==================== VIEW 1: DASHBOARD (List of Reports) ==================== -->
     <div id="view-dashboard" class="space-y-6">
@@ -289,8 +285,8 @@
         </div>
       </div>
 
-      <!-- Reports List Grid -->
-      <div id="reports-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Reports List Grid (Responsive Phone / Tablet / Desktop) -->
+      <div id="reports-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <div class="col-span-full text-center py-16 google-card text-[var(--g-muted)] text-sm">
           <div class="w-12 h-12 rounded-full bg-[var(--g-surface-variant)] flex items-center justify-center mx-auto mb-3 text-[var(--g-blue)]">
             <i class="fa-solid fa-spinner fa-spin text-lg"></i>
@@ -303,65 +299,65 @@
     <!-- ==================== VIEW 2: REPORT EDITOR ==================== -->
     <div id="view-editor" class="hidden space-y-6">
       <!-- Editor Top Bar -->
-      <div class="flex flex-wrap items-center justify-between gap-4 bg-[var(--g-surface)] p-4 rounded-2xl border border-[var(--g-border)] shadow-[0_1px_2px_0_rgba(0,0,0,0.04)] no-print">
-        <button onclick="showDashboard()" class="text-xs font-medium text-[var(--g-text)] flex items-center gap-1.5 px-4 py-2 rounded-full google-btn-outlined">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[var(--g-surface)] p-3.5 sm:p-4 rounded-2xl border border-[var(--g-border)] shadow-[0_1px_2px_0_rgba(0,0,0,0.04)] no-print">
+        <button onclick="showDashboard()" class="text-xs font-medium text-[var(--g-text)] flex items-center gap-1.5 px-3.5 py-2 rounded-full google-btn-outlined self-start sm:self-auto">
           <i class="fa-solid fa-arrow-left text-[11px]"></i>
           <span>Back to Audits</span>
         </button>
         
-        <div class="flex flex-wrap items-center gap-2">
-          <button id="btn-save-report" onclick="saveCurrentReport()" class="text-xs font-bold px-5 py-2 rounded-full google-btn-primary shadow-sm flex items-center gap-1.5 active:scale-95">
+        <div class="flex flex-wrap items-center gap-2 self-stretch sm:self-auto justify-end">
+          <button id="btn-save-report" onclick="saveCurrentReport()" class="text-xs font-bold px-4 sm:px-5 py-2 rounded-full google-btn-primary shadow-sm flex items-center gap-1.5 active:scale-95">
             <i id="btn-save-icon" class="fa-solid fa-floppy-disk text-[12px]"></i>
             <span id="btn-save-text">Save Audit</span>
           </button>
-          <a id="btn-download-pdf" href="#" target="_blank" class="text-xs font-bold px-4 py-2 rounded-full bg-[#1e8e3e] hover:bg-[#137333] text-white transition flex items-center gap-1.5 shadow-sm">
+          <a id="btn-download-pdf" href="#" target="_blank" class="text-xs font-bold px-3.5 sm:px-4 py-2 rounded-full bg-[#1e8e3e] hover:bg-[#137333] text-white transition flex items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-file-pdf text-[12px]"></i>
             <span>Official PDF</span>
           </a>
-          <button onclick="window.print()" class="text-xs font-medium px-4 py-2 rounded-full google-btn-outlined flex items-center gap-1.5">
+          <button onclick="window.print()" class="text-xs font-medium px-3.5 sm:px-4 py-2 rounded-full google-btn-outlined flex items-center gap-1.5">
             <i class="fa-solid fa-print text-[12px]"></i>
-            <span>Print</span>
+            <span class="hidden xs:inline">Print</span>
           </button>
-          <button onclick="deleteCurrentReport()" class="text-xs font-medium text-[var(--g-red)] hover:bg-[var(--g-red-bg)] px-3.5 py-2 rounded-full border border-[var(--g-red-border)] transition flex items-center gap-1.5">
+          <button onclick="deleteCurrentReport()" class="text-xs font-medium text-[var(--g-red)] hover:bg-[var(--g-red-bg)] px-3 sm:px-3.5 py-2 rounded-full border border-[var(--g-red-border)] transition flex items-center gap-1.5">
             <i class="fa-solid fa-trash text-[11px]"></i>
-            <span>Delete</span>
+            <span class="hidden xs:inline">Delete</span>
           </button>
         </div>
       </div>
 
-      <!-- Audit Metadata Form Card -->
-      <div class="google-card p-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[var(--g-border)] pb-4 mb-5 gap-2">
-          <h3 class="text-base font-bold text-[var(--g-text)] flex items-center gap-2">
+      <!-- Audit Metadata Form Card (Clean Empty Inputs for New Audit) -->
+      <div class="google-card p-4 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[var(--g-border)] pb-3 mb-4 gap-2">
+          <h3 class="text-sm sm:text-base font-bold text-[var(--g-text)] flex items-center gap-2">
             <i class="fa-solid fa-clipboard-check text-[var(--g-blue)]"></i>
             <span>FRM-FLD-003 Site Readiness Verification Checklist</span>
           </h3>
-          <span class="text-[11px] font-mono px-3 py-1 rounded-full bg-[var(--g-blue-bg)] text-[var(--g-blue)] border border-[var(--g-blue-border)] self-start sm:self-auto font-bold">Standard Template</span>
+          <span class="text-[10px] sm:text-[11px] font-mono px-2.5 py-1 rounded-full bg-[var(--g-blue-bg)] text-[var(--g-blue)] border border-[var(--g-blue-border)] self-start sm:self-auto font-bold">Standard Template</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
           <div>
-            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1.5">Project Title</label>
-            <input type="text" id="rep-title" class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
+            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1">Project Title</label>
+            <input type="text" id="rep-title" placeholder="Enter project title..." class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1.5">Conducted By (Engineer)</label>
-            <input type="text" id="rep-auditor" class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
+            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1">Conducted By (Engineer)</label>
+            <input type="text" id="rep-auditor" placeholder="Enter auditor / engineer name..." class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1.5">Audit Date</label>
+            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1">Audit Date</label>
             <input type="date" id="rep-date" class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1.5">Site / Facility Name</label>
-            <input type="text" id="rep-site" class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
+            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1">Site / Facility Name</label>
+            <input type="text" id="rep-site" placeholder="Enter facility / site name..." class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1.5">AMR / AGV Model</label>
-            <input type="text" id="rep-model" class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
+            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1">AMR / AGV Model</label>
+            <input type="text" id="rep-model" placeholder="Enter AMR / AGV model..." class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1.5">Overall Readiness Status</label>
+            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1">Overall Readiness Status</label>
             <select id="rep-status" class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-bold">
               <option value="PASS">Ready for AMR Deployment (Pass)</option>
               <option value="ACTION_REQUIRED">Action Required (Conditional)</option>
@@ -372,18 +368,18 @@
       </div>
 
       <!-- Checklist Sections Container -->
-      <div id="checklist-sections" class="space-y-6">
-        <!-- Rendered dynamically with Remark-level photo upload -->
+      <div id="checklist-sections" class="space-y-4 sm:space-y-6">
+        <!-- Rendered dynamically with Remark-level camera photo capture -->
       </div>
 
       <!-- Action Items Block -->
-      <div class="google-card p-6 space-y-4">
-        <div class="flex items-center justify-between border-b border-[var(--g-border)] pb-4">
-          <h3 class="text-base font-bold text-[var(--g-text)] flex items-center gap-2">
+      <div class="google-card p-4 sm:p-6 space-y-4">
+        <div class="flex items-center justify-between border-b border-[var(--g-border)] pb-3">
+          <h3 class="text-sm sm:text-base font-bold text-[var(--g-text)] flex items-center gap-2">
             <i class="fa-solid fa-list-check text-[var(--g-blue)]"></i>
             <span>Action Items & Site Rectifications</span>
           </h3>
-          <button onclick="addActionItem()" class="text-xs font-semibold px-3.5 py-1.5 rounded-full google-btn-tonal flex items-center gap-1.5">
+          <button onclick="addActionItem()" class="text-xs font-semibold px-3 py-1.5 rounded-full google-btn-tonal flex items-center gap-1.5">
             <i class="fa-solid fa-plus text-[10px]"></i>
             <span>Add Action Item</span>
           </button>
@@ -394,38 +390,38 @@
         </div>
       </div>
 
-      <!-- Verification & Handwritten Signature Block -->
-      <div class="google-card p-6 space-y-5">
-        <div class="border-b border-[var(--g-border)] pb-4">
-          <h3 class="text-base font-bold text-[var(--g-text)] flex items-center gap-2">
+      <!-- Verification & Handwritten Signature Block (Black Ink Signature Pad) -->
+      <div class="google-card p-4 sm:p-6 space-y-5">
+        <div class="border-b border-[var(--g-border)] pb-3">
+          <h3 class="text-sm sm:text-base font-bold text-[var(--g-text)] flex items-center gap-2">
             <i class="fa-solid fa-signature text-[var(--g-blue)]"></i>
             <span>Verification & Lead Engineer Sign-off</span>
           </h3>
           <p class="text-xs text-[var(--g-muted)] mt-0.5">Final sign-off by Lead Deployment Engineer with interactive handwritten signature.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-4">
           <div>
-            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1.5">Verified by (Lead Engineer)</label>
-            <input type="text" id="rep-verifier" placeholder="e.g. Ir. Tan Wei Ming" class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
+            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1">Verified by (Lead Engineer)</label>
+            <input type="text" id="rep-verifier" placeholder="Enter lead engineer name..." class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1.5">Designation</label>
-            <input type="text" id="rep-verifier-desig" placeholder="e.g. DF Robotics Application Specialist" class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
+            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1">Designation</label>
+            <input type="text" id="rep-verifier-desig" placeholder="Enter designation..." class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
           </div>
           <div>
-            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1.5">Verification Date</label>
+            <label class="block text-xs font-semibold text-[var(--g-muted)] mb-1">Verification Date</label>
             <input type="date" id="rep-verification-date" class="google-input w-full rounded-xl px-3.5 py-2 text-xs font-medium" />
           </div>
         </div>
 
-        <!-- Handwritten Signature Canvas Area -->
+        <!-- Handwritten Signature Canvas Area (White Paper Surface with Black Ink) -->
         <div class="pt-3 border-t border-[var(--g-border)]">
-          <div class="flex items-center justify-between mb-2.5">
+          <div class="flex items-center justify-between mb-2">
             <label class="block text-xs font-bold text-[var(--g-text)] flex items-center gap-1.5">
               <i class="fa-solid fa-pen-nib text-[var(--g-blue)]"></i>
               <span>Handwritten Signature</span>
-              <span class="text-[var(--g-muted)] font-normal">(Sign with mouse / stylus / touch)</span>
+              <span class="text-[var(--g-muted)] font-normal text-[11px]">(Black ink &bull; sign with stylus / touch / mouse)</span>
             </label>
             <button type="button" onclick="clearSignature()" class="text-xs text-[var(--g-red)] hover:bg-[var(--g-red-bg)] px-3 py-1 rounded-full border border-[var(--g-red-border)] transition flex items-center gap-1">
               <i class="fa-solid fa-eraser text-[10px]"></i>
@@ -433,17 +429,17 @@
             </button>
           </div>
 
-          <div class="relative w-full rounded-2xl border border-[var(--g-border)] bg-[var(--canvas-bg)] overflow-hidden shadow-inner flex flex-col items-center">
-            <!-- Canvas for drawing signature -->
-            <canvas id="sig-canvas" class="w-full h-36 sm:h-44 touch-none cursor-crosshair"></canvas>
+          <div class="relative w-full rounded-2xl border-2 border-[#cbd5e1] dark:border-slate-600 bg-white overflow-hidden shadow-sm flex flex-col items-center">
+            <!-- Canvas for drawing signature in crisp BLACK ink -->
+            <canvas id="sig-canvas" class="w-full h-36 sm:h-44 touch-none cursor-crosshair bg-white"></canvas>
             
             <!-- Guideline watermark -->
-            <div class="absolute bottom-6 inset-x-8 border-b border-dashed border-[var(--g-border)] pointer-events-none flex justify-between text-[10px] text-[var(--g-muted)]">
-              <span>Sign Above This Line</span>
+            <div class="absolute bottom-5 inset-x-8 border-b border-dashed border-slate-300 pointer-events-none flex justify-between text-[10px] text-slate-400 select-none">
+              <span>Sign Above This Line (Black Ink)</span>
               <span>X</span>
             </div>
           </div>
-          <p class="text-[11px] text-[var(--g-muted)] mt-1.5">Draw official verification signature. It will be embedded directly into the generated ReportLab PDF.</p>
+          <p class="text-[11px] text-[var(--g-muted)] mt-1.5">Official verification signature drawn here is rendered in black ink and embedded directly into the ReportLab PDF.</p>
         </div>
       </div>
 
@@ -451,29 +447,34 @@
   </main>
 
   <!-- Photo Viewer Modal (Lightbox) -->
-  <div id="photo-viewer-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden no-print" onclick="closePhotoModal()">
-    <div class="relative max-w-4xl w-full bg-[var(--g-surface)] border border-[var(--g-border)] rounded-2xl overflow-hidden shadow-2xl p-5 flex flex-col items-center space-y-3" onclick="event.stopPropagation()">
-      <div class="w-full flex items-center justify-between border-b border-[var(--g-border)] pb-3">
+  <div id="photo-viewer-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 hidden no-print" onclick="closePhotoModal()">
+    <div class="relative max-w-4xl w-full bg-[var(--g-surface)] border border-[var(--g-border)] rounded-2xl overflow-hidden shadow-2xl p-4 sm:p-5 flex flex-col items-center space-y-3" onclick="event.stopPropagation()">
+      <div class="w-full flex items-center justify-between border-b border-[var(--g-border)] pb-2.5">
         <h4 id="photo-modal-title" class="text-sm font-bold text-[var(--g-text)] truncate">Remark Evidence Photo</h4>
         <button onclick="closePhotoModal()" class="w-8 h-8 rounded-full hover:bg-[var(--g-surface-variant)] flex items-center justify-center text-[var(--g-muted)] hover:text-[var(--g-text)] transition">
           <i class="fa-solid fa-xmark text-sm"></i>
         </button>
       </div>
-      <div class="w-full max-h-[75vh] flex items-center justify-center overflow-auto rounded-xl bg-[var(--g-surface-variant)] p-2">
-        <img id="photo-modal-img" src="" alt="Evidence Fullsize" class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-sm" />
+      <div class="w-full max-h-[70vh] flex items-center justify-center overflow-auto rounded-xl bg-[var(--g-surface-variant)] p-2">
+        <img id="photo-modal-img" src="" alt="Evidence Fullsize" class="max-w-full max-h-[65vh] object-contain rounded-lg shadow-sm" />
       </div>
       <p id="photo-modal-caption" class="text-xs text-[var(--g-muted)] text-center font-medium"></p>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="border-t border-[var(--g-border)] px-4 sm:px-6 py-4 text-center text-xs text-[var(--g-muted)] no-print bg-[var(--g-surface)]">
-    <p>DF Automation & Robotics &bull; FRM-FLD-003 Site Readiness Verification &bull; 2026</p>
-  </footer>
-
   <script>
     let currentReport = null;
     let isSaving = false;
+
+    // ==================== DATE FORMATTING HELPER (DD/MM/YYYY) ====================
+    function formatDisplayDate(dateStr) {
+      if (!dateStr || typeof dateStr !== 'string') return '-';
+      const parts = dateStr.trim().split('-');
+      if (parts.length === 3 && parts[0].length === 4) {
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      }
+      return dateStr;
+    }
 
     // ==================== THEME MANAGEMENT ====================
     function getSavedTheme() {
@@ -484,13 +485,12 @@
       const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
       if (isDark) {
         document.documentElement.classList.add('dark');
-        document.getElementById('themeIcon').textContent = 'dark_mode';
+        const icon = document.getElementById('themeIcon');
+        if (icon) icon.textContent = 'dark_mode';
       } else {
         document.documentElement.classList.remove('dark');
-        document.getElementById('themeIcon').textContent = 'light_mode';
-      }
-      if (sigCanvas && sigCtx) {
-        sigCtx.strokeStyle = isDark ? '#8ab4f8' : '#1a73e8';
+        const icon = document.getElementById('themeIcon');
+        if (icon) icon.textContent = 'light_mode';
       }
     }
 
@@ -517,7 +517,7 @@
       if (getSavedTheme() === 'system') applyTheme('system');
     });
 
-    // ==================== SIGNATURE PAD CONTROLLER ====================
+    // ==================== SIGNATURE PAD CONTROLLER (BLACK INK) ====================
     let sigCanvas, sigCtx;
     let isDrawing = false;
     let lastX = 0, lastY = 0;
@@ -544,8 +544,8 @@
         sigCanvas.height = rect.height * dpr;
         sigCtx.scale(dpr, dpr);
 
-        const isDark = document.documentElement.classList.contains('dark');
-        sigCtx.strokeStyle = isDark ? '#8ab4f8' : '#1a73e8';
+        // Always BLACK ink for crisp official signatures
+        sigCtx.strokeStyle = '#000000';
         sigCtx.lineWidth = 2.5;
         sigCtx.lineCap = 'round';
         sigCtx.lineJoin = 'round';
@@ -582,7 +582,7 @@
         const pos = getPos(e);
         lastX = pos.x;
         lastY = pos.y;
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
       }
 
       function draw(e) {
@@ -594,7 +594,7 @@
         sigCtx.stroke();
         lastX = pos.x;
         lastY = pos.y;
-        e.preventDefault();
+        if (e.cancelable) e.preventDefault();
       }
 
       function stopDraw() {
@@ -710,11 +710,11 @@
           }
 
           return `
-            <div class="google-card p-5 flex flex-col justify-between group">
+            <div class="google-card p-4 sm:p-5 flex flex-col justify-between group">
               <div>
                 <div class="flex items-center justify-between mb-3 gap-2">
                   ${statusBadge}
-                  <span class="text-xs font-mono text-[var(--g-muted)]">${r.date || 'Today'}</span>
+                  <span class="text-xs font-mono text-[var(--g-muted)]">${formatDisplayDate(r.date)}</span>
                 </div>
                 <h3 class="text-base font-bold text-[var(--g-text)] group-hover:text-[var(--g-blue)] transition-colors line-clamp-1">${r.projectTitle || 'Site Audit'}</h3>
                 <p class="text-xs text-[var(--g-muted)] mt-1 line-clamp-1">Facility: <b class="text-[var(--g-text)]">${r.siteName || '-'}</b> &bull; AMR: ${r.amrModel || '-'}</p>
@@ -746,20 +746,23 @@
       }
     }
 
+    // ==================== NEW REPORT (NO PRE-FILLED TEXT) ====================
     async function createNewReport() {
       try {
         const templateRes = await fetch('/api/template');
         const defaultSections = await templateRes.json();
         
+        // Blank initial metadata fields (no pre-text)
         const newPayload = {
-          projectTitle: "Site AMR Readiness Audit",
-          siteName: "Customer Facility Site",
-          conductedBy: "DF Field Engineer",
-          customerName: "Customer Lead",
-          amrModel: "Zalpha V3.3 Standard AMR",
+          projectTitle: "",
+          siteName: "",
+          conductedBy: "",
+          customerName: "",
+          amrModel: "",
           date: new Date().toISOString().split('T')[0],
           verificationDate: new Date().toISOString().split('T')[0],
-          verifierDesignation: "DF Robotics Specialist",
+          verifiedBy: "",
+          verifierDesignation: "",
           overallStatus: "ACTION_REQUIRED",
           sections: defaultSections,
           actionItems: [],
@@ -791,7 +794,7 @@
         document.getElementById('rep-auditor').value = currentReport.conductedBy || '';
         document.getElementById('rep-date').value = currentReport.date || '';
         document.getElementById('rep-verifier').value = currentReport.verifiedBy || '';
-        document.getElementById('rep-verifier-desig').value = currentReport.verifierDesignation || 'DF Robotics Specialist';
+        document.getElementById('rep-verifier-desig').value = currentReport.verifierDesignation || '';
         document.getElementById('rep-verification-date').value = currentReport.verificationDate || currentReport.date || '';
         document.getElementById('rep-status').value = currentReport.overallStatus || 'ACTION_REQUIRED';
         document.getElementById('btn-download-pdf').href = `/api/reports/${currentReport.id}/pdf`;
@@ -823,9 +826,9 @@
 
       container.innerHTML = sections.map((sec, sIdx) => {
         return `
-          <div class="google-card p-5 sm:p-6 space-y-4">
+          <div class="google-card p-4 sm:p-6 space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[var(--g-border)] pb-3 gap-2">
-              <h3 class="text-base font-bold text-[var(--g-text)] flex items-center gap-2">
+              <h3 class="text-sm sm:text-base font-bold text-[var(--g-text)] flex items-center gap-2">
                 <span class="w-6 h-6 rounded-full bg-[var(--g-blue-bg)] text-[var(--g-blue)] border border-[var(--g-blue-border)] text-xs flex items-center justify-center font-bold">${sIdx + 1}</span>
                 <span>${sec.title}</span>
               </h3>
@@ -842,15 +845,15 @@
                 const photo = item.photo;
 
                 return `
-                  <div class="p-3.5 sm:p-4 rounded-xl bg-[var(--g-surface-variant)] border border-[var(--g-border)] space-y-2.5">
+                  <div class="p-3 sm:p-4 rounded-xl bg-[var(--g-surface-variant)] border border-[var(--g-border)] space-y-2.5">
                     <!-- Row Header: Requirement and Status -->
                     <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2.5">
                       <div class="text-xs font-medium text-[var(--g-text)] flex items-start gap-2">
                         <span class="text-[var(--g-blue)] font-mono font-bold shrink-0">${item.number}</span>
                         <span>${item.requirement}</span>
                       </div>
-                      <div class="self-start sm:self-auto shrink-0">
-                        <select onchange="updateItemStatus(${sIdx}, ${iIdx}, this.value)" class="google-input text-xs rounded-lg px-2.5 py-1.5 font-semibold outline-none transition">
+                      <div class="self-start sm:self-auto shrink-0 w-full sm:w-auto">
+                        <select onchange="updateItemStatus(${sIdx}, ${iIdx}, this.value)" class="google-input text-xs rounded-lg px-2.5 py-1.5 font-semibold outline-none transition w-full sm:w-auto">
                           <option value="PENDING" ${item.status === 'PENDING' ? 'selected' : ''}>⏳ Pending</option>
                           <option value="PASS" ${item.status === 'PASS' ? 'selected' : ''}>✅ Pass</option>
                           <option value="ACTION_REQUIRED" ${item.status === 'ACTION_REQUIRED' ? 'selected' : ''}>⚠️ Action Required</option>
@@ -860,21 +863,19 @@
                       </div>
                     </div>
 
-                    ${item.defaultRemark ? `<div class="text-[11px] text-[var(--g-yellow)] font-mono">Standard Spec: ${item.defaultRemark}</div>` : ''}
-
                     <!-- Row Middle: Inspector Remark Input -->
                     <div>
                       <input type="text" placeholder="Remark / inspection findings for this item..." value="${item.userRemark || ''}" onchange="updateItemRemark(${sIdx}, ${iIdx}, this.value)" class="google-input w-full rounded-lg px-3 py-1.5 text-xs text-[var(--g-text)]" />
                     </div>
 
-                    <!-- Row Bottom: Remark-Level Photo Upload (Max 1 photo per remark) -->
+                    <!-- Row Bottom: Remark-Level Camera Capture & Photo Upload -->
                     <div class="pt-1 flex flex-wrap items-center justify-between gap-2">
                       <div class="flex items-center gap-2">
                         ${photo ? `
                           <!-- Photo Preview Card -->
                           <div class="flex items-center gap-2.5 p-1.5 sm:p-2 rounded-xl bg-[var(--g-surface)] border border-[var(--g-border)]">
                             <img src="${photo.url}" alt="Remark Evidence" class="w-12 h-9 sm:w-16 sm:h-11 object-cover rounded-lg border border-[var(--g-border)] shrink-0 cursor-pointer hover:opacity-90" onclick="viewPhoto('${photo.url}', 'Item ${item.number} Evidence Photo', '${item.requirement.replace(/'/g, "\\'")}')" />
-                            <div class="max-w-[150px] sm:max-w-[200px]">
+                            <div class="max-w-[140px] sm:max-w-[200px]">
                               <p class="text-[11px] font-semibold text-[var(--g-text)] truncate">${photo.caption || photo.filename}</p>
                               <span class="text-[9px] text-[var(--g-blue)] font-mono">📷 1 Photo Attached</span>
                             </div>
@@ -888,12 +889,24 @@
                             </div>
                           </div>
                         ` : `
-                          <!-- Upload Photo Trigger (Max 1) -->
-                          <label class="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full google-btn-outlined text-xs font-semibold hover:border-[var(--g-blue)] transition">
-                            <i class="fa-solid fa-camera text-[11px] text-[var(--g-blue)]"></i>
-                            <span>Add Photo (Max 1)</span>
-                            <input type="file" accept="image/*" onchange="uploadRemarkPhoto(${sIdx}, ${iIdx}, this.files[0])" class="hidden" />
-                          </label>
+                          <!-- Camera / Upload Actions -->
+                          <div class="flex flex-wrap items-center gap-2">
+                            <!-- Take Photo Button (Direct Camera Trigger) -->
+                            <button type="button" onclick="triggerCameraCapture(${sIdx}, ${iIdx})" class="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full google-btn-outlined text-xs font-semibold hover:border-[var(--g-blue)] transition shadow-xs">
+                              <i class="fa-solid fa-camera text-[11px] text-[var(--g-blue)]"></i>
+                              <span>Take Photo</span>
+                            </button>
+
+                            <!-- Choose File / Gallery Button -->
+                            <label class="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full google-btn-outlined text-xs font-semibold hover:border-[var(--g-blue)] transition shadow-xs">
+                              <i class="fa-solid fa-image text-[11px] text-[var(--g-muted)]"></i>
+                              <span>Upload File</span>
+                              <input type="file" accept="image/*" onchange="uploadRemarkPhoto(${sIdx}, ${iIdx}, this.files[0])" class="hidden" />
+                            </label>
+
+                            <!-- Hidden dedicated camera input with capture attribute -->
+                            <input type="file" id="camera-input-${sIdx}-${iIdx}" accept="image/*" capture="environment" onchange="uploadRemarkPhoto(${sIdx}, ${iIdx}, this.files[0])" class="hidden" />
+                          </div>
                         `}
                       </div>
                     </div>
@@ -905,6 +918,32 @@
           </div>
         `;
       }).join('');
+    }
+
+    // ==================== CAMERA CAPTURE LOGIC WITH NOTIFICATION ====================
+    async function triggerCameraCapture(sIdx, iIdx) {
+      const camInput = document.getElementById(`camera-input-${sIdx}-${iIdx}`);
+      
+      // Check if browser has camera capabilities
+      if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+        try {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const videoInputs = devices.filter(d => d.kind === 'videoinput');
+          if (videoInputs.length === 0) {
+            showToast("No camera found on this device.", "error");
+            if (camInput) camInput.click();
+            return;
+          }
+        } catch (err) {
+          console.warn("Camera check warning:", err);
+        }
+      }
+
+      if (camInput) {
+        camInput.click();
+      } else {
+        showToast("No camera found on this device.", "error");
+      }
     }
 
     function batchSetSectionStatus(sIdx, status) {
@@ -1021,7 +1060,7 @@
     function addActionItem() {
       if (!currentReport) return;
       currentReport.actionItems = currentReport.actionItems || [];
-      currentReport.actionItems.push({ description: "", pic: "Facility Team", dueDate: new Date().toISOString().split('T')[0] });
+      currentReport.actionItems.push({ description: "", pic: "", dueDate: new Date().toISOString().split('T')[0] });
       renderActionItems(currentReport.actionItems);
     }
 
