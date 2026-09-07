@@ -48,8 +48,17 @@ def load_template_sections():
     return []
 
 def read_db():
+    local_backup = BASE_DIR / "data" / "db.json"
     if not DB_FILE.exists():
         initial = {"users": [], "reports": []}
+        if local_backup.exists() and local_backup != DB_FILE:
+            try:
+                with open(local_backup, "r", encoding="utf-8") as f:
+                    seed = json.load(f)
+                    if isinstance(seed, dict) and seed.get("reports"):
+                        initial = seed
+            except Exception as e:
+                print(f"Error seeding db from {local_backup}: {e}")
         write_db(initial)
         return initial
     try:
@@ -59,6 +68,20 @@ def read_db():
                 data = {"reports": []}
             if "reports" not in data:
                 data["reports"] = []
+
+            # If reports array is empty in Database/, seed from local data/db.json if available
+            if not data["reports"] and local_backup.exists() and local_backup != DB_FILE:
+                try:
+                    with open(local_backup, "r", encoding="utf-8") as f:
+                        seed = json.load(f)
+                        if isinstance(seed, dict) and seed.get("reports"):
+                            data["reports"] = seed["reports"]
+                            if seed.get("users") and not data.get("users"):
+                                data["users"] = seed["users"]
+                            write_db(data)
+                except Exception as e:
+                    print(f"Error seeding reports from {local_backup}: {e}")
+
             return data
     except Exception as e:
         print(f"Error reading db.json: {e}")

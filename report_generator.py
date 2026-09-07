@@ -213,8 +213,12 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
                 else:
                     remark_display = f"{def_remark}"
                     
-            if itm_photo and isinstance(itm_photo, dict) and itm_photo.get('filename'):
-                img_path = UPLOADS_DIR / itm_photo.get('filename')
+            photo_fn = None
+            if itm_photo and isinstance(itm_photo, dict):
+                photo_fn = itm_photo.get('filename') or (os.path.basename(itm_photo.get('url')) if itm_photo.get('url') else None)
+
+            if photo_fn:
+                img_path = UPLOADS_DIR / photo_fn
                 if img_path.exists():
                     item_photos.append({
                         'number': num,
@@ -349,6 +353,10 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
     if signature_data and isinstance(signature_data, str) and signature_data.startswith('data:image'):
         try:
             header, encoded = signature_data.split(',', 1)
+            encoded = encoded.strip()
+            missing_padding = len(encoded) % 4
+            if missing_padding:
+                encoded += '=' * (4 - missing_padding)
             sig_bytes = base64.b64decode(encoded)
             sig_img_flowable = Image(io.BytesIO(sig_bytes), width=120, height=42)
         except Exception as e:

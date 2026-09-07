@@ -326,18 +326,25 @@
   </main>
 
   <script>
+    function updateIcon() {
+      const isDark = document.documentElement.classList.contains('dark');
+      const icon = document.getElementById('themeIcon');
+      if (icon) icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+    }
+
     function toggleTheme() {
       const isDark = document.documentElement.classList.contains('dark');
       const newTheme = isDark ? 'light' : 'dark';
       localStorage.setItem('df_theme_mode', newTheme);
       if (newTheme === 'dark') {
         document.documentElement.classList.add('dark');
-        document.getElementById('themeIcon').textContent = 'dark_mode';
       } else {
         document.documentElement.classList.remove('dark');
-        document.getElementById('themeIcon').textContent = 'light_mode';
       }
+      updateIcon();
     }
+
+    window.addEventListener('DOMContentLoaded', updateIcon);
   </script>
 </body>
 </html>
