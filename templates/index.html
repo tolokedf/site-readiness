@@ -885,13 +885,13 @@
                         ${photo ? `
                           <!-- Photo Preview Card -->
                           <div class="flex items-center gap-2.5 p-1.5 sm:p-2 rounded-xl bg-[var(--g-surface)] border border-[var(--g-border)]">
-                            <img src="${photo.url}" alt="Remark Evidence" class="w-12 h-9 sm:w-16 sm:h-11 object-cover rounded-lg border border-[var(--g-border)] shrink-0 cursor-pointer hover:opacity-90" onclick="viewPhoto('${photo.url}', 'Item ${item.number} Evidence Photo', '${item.requirement.replace(/'/g, "\\'")}')" />
+                            <img src="${photo.url}" alt="Remark Evidence" class="w-12 h-9 sm:w-16 sm:h-11 object-cover rounded-lg border border-[var(--g-border)] shrink-0 cursor-pointer hover:opacity-90" onclick="viewItemPhoto(${sIdx}, ${iIdx})" />
                             <div class="max-w-[140px] sm:max-w-[200px]">
                               <p class="text-[11px] font-semibold text-[var(--g-text)] truncate">${photo.caption || photo.filename}</p>
                               <span class="text-[9px] text-[var(--g-blue)] font-mono">📷 1 Photo Attached</span>
                             </div>
                             <div class="flex items-center gap-1 ml-1">
-                              <button type="button" onclick="viewPhoto('${photo.url}', 'Item ${item.number} Evidence Photo', '${item.requirement.replace(/'/g, "\\'")}')" class="p-1.5 text-xs text-[var(--g-blue)] hover:bg-[var(--g-blue-bg)] rounded-lg transition" title="View Fullsize">
+                              <button type="button" onclick="viewItemPhoto(${sIdx}, ${iIdx})" class="p-1.5 text-xs text-[var(--g-blue)] hover:bg-[var(--g-blue-bg)] rounded-lg transition" title="View Fullsize">
                                 <i class="fa-solid fa-eye"></i>
                               </button>
                               <button type="button" onclick="removeItemPhoto(${sIdx}, ${iIdx})" class="p-1.5 text-xs text-[var(--g-red)] hover:bg-[var(--g-red-bg)] rounded-lg transition" title="Remove Photo">
@@ -1017,6 +1017,16 @@
     }
 
     // ==================== PHOTO LIGHTBOX MODAL ====================
+    function viewItemPhoto(sIdx, iIdx) {
+      if (!currentReport || !currentReport.sections) return;
+      const sec = currentReport.sections[sIdx];
+      if (!sec || !sec.items) return;
+      const item = sec.items[iIdx];
+      if (item && item.photo) {
+        viewPhoto(item.photo.url, `Item ${item.number} Evidence Photo`, item.requirement);
+      }
+    }
+
     function viewPhoto(url, title, caption) {
       const modal = document.getElementById('photo-viewer-modal');
       const modalImg = document.getElementById('photo-modal-img');

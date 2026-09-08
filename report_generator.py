@@ -5,6 +5,7 @@ Supports item-level evidence photos and handwritten signature embedding.
 """
 import io
 import os
+import html
 import base64
 from pathlib import Path
 from datetime import datetime
@@ -147,18 +148,25 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
     story.append(HRFlowable(width="100%", thickness=1.5, color=CYAN_BRAND, spaceAfter=5))
     
     # 2. Metadata Grid (Project Title, Conducted By, Date, Site, Model)
-    overall_stat = report.get('overallStatus', 'ACTION_REQUIRED')
+    report = report or {}
+    overall_stat = str(report.get('overallStatus') or 'ACTION_REQUIRED')
     stat_color = STATUS_COLORS.get(overall_stat, DARK_NAVY)
     
+    project_title = html.escape(str(report.get('projectTitle') or '-'))
+    conducted_by = html.escape(str(report.get('conductedBy') or '-'))
+    site_name = html.escape(str(report.get('siteName') or '-'))
+    amr_model = html.escape(str(report.get('amrModel') or '-'))
+    report_date_dmy = html.escape(str(format_dmy(report.get('date'))))
+
     meta_data = [
         [
-            Paragraph(f"<b>Project Title:</b> {report.get('projectTitle') or '-'}", styles['CellTextBold']),
-            Paragraph(f"<b>Conducted By:</b> {report.get('conductedBy') or '-'}", styles['CellTextBold']),
-            Paragraph(f"<b>Date:</b> {format_dmy(report.get('date'))}", styles['CellTextBold'])
+            Paragraph(f"<b>Project Title:</b> {project_title}", styles['CellTextBold']),
+            Paragraph(f"<b>Conducted By:</b> {conducted_by}", styles['CellTextBold']),
+            Paragraph(f"<b>Date:</b> {report_date_dmy}", styles['CellTextBold'])
         ],
         [
-            Paragraph(f"<b>Site Name / Facility:</b> {report.get('siteName') or '-'}", styles['CellText']),
-            Paragraph(f"<b>AMR Model:</b> {report.get('amrModel') or '-'}", styles['CellText']),
+            Paragraph(f"<b>Site Name / Facility:</b> {site_name}", styles['CellText']),
+            Paragraph(f"<b>AMR Model:</b> {amr_model}", styles['CellText']),
             Paragraph(f"<b>Readiness Verdict:</b> <font color='{stat_color.hexval()}'><b>{overall_stat.replace('_', ' ')}</b></font>", styles['CellTextBold'])
         ]
     ]
@@ -176,10 +184,12 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
     story.append(Spacer(1, 6))
 
     # 3. Standard Checklist Sections
-    sections = report.get('sections', [])
+    sections = report.get('sections') or []
     for sec in sections:
-        sec_title = sec.get('title', 'Section')
-        items = sec.get('items', [])
+        if not isinstance(sec, dict):
+            continue
+        sec_title = html.escape(str(sec.get('title') or 'Section'))
+        items = sec.get('items') or []
         
         sec_table_data = [
             [
@@ -199,11 +209,13 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
         item_photos = []
 
         for itm in items:
-            num = str(itm.get('number', '1.0'))
-            req = itm.get('requirement', '')
-            status = itm.get('status', 'PENDING')
-            user_remark = itm.get('userRemark', '').strip()
-            def_remark = itm.get('defaultRemark', '').strip()
+            if not isinstance(itm, dict):
+                continue
+            num = html.escape(str(itm.get('number') or '1.0'))
+            req = html.escape(str(itm.get('requirement') or ''))
+            status = str(itm.get('status') or 'PENDING')
+            user_remark = str(itm.get('userRemark') or '').strip()
+            def_remark = str(itm.get('defaultRemark') or '').strip()
             itm_photo = itm.get('photo')
             
             remark_display = user_remark
@@ -224,7 +236,7 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
                         'number': num,
                         'req': req,
                         'path': str(img_path),
-                        'caption': itm_photo.get('caption') or f"Item {num} Photo"
+                        'caption': (itm_photo.get('caption') or f"Item {num} Photo") if isinstance(itm_photo, dict) else f"Item {num} Photo"
                     })
                     if remark_display:
                         remark_display = f"{remark_display} [📷 Photo Attached]"
@@ -233,12 +245,13 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
                     
             status_color = STATUS_COLORS.get(status, DARK_NAVY)
             status_text = status.replace('_', ' ')
+            remark_display_escaped = html.escape(remark_display)
             
             sec_table_data.append([
                 Paragraph(num, ParagraphStyle('NCol', fontName='Helvetica-Bold', fontSize=7, alignment=1)),
                 Paragraph(req, styles['CellText']),
                 Paragraph(f"<font color='{status_color.hexval()}'><b>{status_text}</b></font>", ParagraphStyle('StatCol', fontName='Helvetica-Bold', fontSize=6.5, alignment=1)),
-                Paragraph(remark_display if remark_display else "-", styles['RemarkText'] if not user_remark and not itm_photo else styles['CellText'])
+                Paragraph(remark_display_escaped if remark_display_escaped else "-", styles['RemarkText'] if not user_remark and not itm_photo else styles['CellText'])
             ])
             
         t_sec = Table(sec_table_data, colWidths=[28, 272, 70, 175])
@@ -301,7 +314,7 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
         story.append(KeepTogether(flowables))
 
     # 4. Action Items Table
-    action_items = report.get('actionItems', [])
+    action_items = report.get('actionItems') or []
     act_data = [
         [Paragraph("<b>ACTION ITEMS / PENDING SITE RECTIFICATIONS</b>", styles['SectionHeader']), "", "", ""],
         [
@@ -312,20 +325,25 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
         ]
     ]
     
-    if action_items and len(action_items) > 0:
-        for idx, act in enumerate(action_items, 1):
+    valid_action_items = [act for act in action_items if isinstance(act, dict)]
+    if valid_action_items:
+        for idx, act in enumerate(valid_action_items, 1):
+            desc = html.escape(str(act.get('description') or act.get('actionItem') or act.get('action') or '-'))
+            pic = html.escape(str(act.get('pic') or '-'))
+            due = html.escape(str(format_dmy(act.get('dueDate') or act.get('date'))))
             act_data.append([
                 Paragraph(str(idx), ParagraphStyle('AN', fontName='Helvetica', fontSize=7, alignment=1)),
-                Paragraph(act.get('description', act.get('actionItem', act.get('action', '-'))), styles['CellText']),
-                Paragraph(act.get('pic', '-'), styles['CellText']),
-                Paragraph(format_dmy(act.get('dueDate') or act.get('date')), ParagraphStyle('AD', fontName='Helvetica', fontSize=7, alignment=1))
+                Paragraph(desc, styles['CellText']),
+                Paragraph(pic, styles['CellText']),
+                Paragraph(due, ParagraphStyle('AD', fontName='Helvetica', fontSize=7, alignment=1))
             ])
     else:
+        report_date_dmy = html.escape(str(format_dmy(report.get('date'))))
         act_data.append([
             Paragraph("1", ParagraphStyle('AN', fontName='Helvetica', fontSize=7, alignment=1)),
             Paragraph("No critical blockers recorded. Proceed with standard AMR mapping & commissioning schedule.", styles['CellText']),
             Paragraph("DF Deployment Team", styles['CellText']),
-            Paragraph(format_dmy(report.get('date')), ParagraphStyle('AD', fontName='Helvetica', fontSize=7, alignment=1))
+            Paragraph(report_date_dmy, ParagraphStyle('AD', fontName='Helvetica', fontSize=7, alignment=1))
         ])
         
     t_act = Table(act_data, colWidths=[28, 287, 120, 110])
@@ -344,9 +362,9 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
     story.append(KeepTogether([t_act, Spacer(1, 6)]))
 
     # 5. Verified By Sign-off Box (with Handwritten Signature embedding)
-    verified_by = report.get('verifiedBy') or report.get('conductedBy') or '-'
-    verifier_desig = report.get('verifierDesignation') or '-'
-    v_date = format_dmy(report.get('verificationDate') or report.get('date') or datetime.now().strftime('%Y-%m-%d'))
+    verified_by = html.escape(str(report.get('verifiedBy') or report.get('conductedBy') or '-'))
+    verifier_desig = html.escape(str(report.get('verifierDesignation') or '-'))
+    v_date = html.escape(str(format_dmy(report.get('verificationDate') or report.get('date') or datetime.now().strftime('%Y-%m-%d'))))
     signature_data = report.get('signature', '')
     
     sig_img_flowable = None

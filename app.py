@@ -277,8 +277,9 @@ def export_html(report_id):
     report_copy = json.loads(json.dumps(report))
     report_copy['date_dmy'] = format_dmy(report_copy.get('date'))
     report_copy['verificationDate_dmy'] = format_dmy(report_copy.get('verificationDate') or report_copy.get('date'))
-    for act in report_copy.get('actionItems', []):
-        act['dueDate_dmy'] = format_dmy(act.get('dueDate'))
+    for act in (report_copy.get('actionItems') or []):
+        if isinstance(act, dict):
+            act['dueDate_dmy'] = format_dmy(act.get('dueDate'))
 
     return render_template("report_html.html", report=report_copy)
 
