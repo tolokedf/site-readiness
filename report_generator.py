@@ -15,11 +15,12 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, KeepTogether, PageBreak, HRFlowable
 )
+from PIL import Image as PILImage
 
 BASE_DIR = Path(__file__).resolve().parent
-ROOT_DATABASE_DIR = BASE_DIR.parent / "Database" / "site_readiness"
-if ROOT_DATABASE_DIR.parent.exists():
-    DATA_DIR = ROOT_DATABASE_DIR
+CUSTOM_DATA_DIR = os.environ.get("SITE_READINESS_DATA_DIR")
+if CUSTOM_DATA_DIR:
+    DATA_DIR = Path(CUSTOM_DATA_DIR).resolve()
 else:
     DATA_DIR = BASE_DIR / "data"
 UPLOADS_DIR = DATA_DIR / "uploads"
@@ -276,6 +277,8 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
             row = []
             for p_info in item_photos:
                 try:
+                    with PILImage.open(p_info['path']) as test_img:
+                        test_img.verify()
                     p_img = Image(p_info['path'], width=150, height=95)
                     caption_p = Paragraph(f"<b>Item {p_info['number']}:</b> {p_info['caption']}", styles['PhotoCaption'])
                     card = Table([[p_img], [caption_p]], colWidths=[160])
@@ -376,9 +379,12 @@ def generate_site_readiness_pdf(report: dict) -> bytes:
             if missing_padding:
                 encoded += '=' * (4 - missing_padding)
             sig_bytes = base64.b64decode(encoded)
+            with PILImage.open(io.BytesIO(sig_bytes)) as test_sig:
+                test_sig.verify()
             sig_img_flowable = Image(io.BytesIO(sig_bytes), width=120, height=42)
         except Exception as e:
             print(f"Error parsing signature image in PDF: {e}")
+            sig_img_flowable = None
             
     sign_text_content = (
         f"<b>Verified by:</b> {verified_by}<br/>"

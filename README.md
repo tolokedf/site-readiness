@@ -15,9 +15,10 @@ An official engineering assessment tool for autonomous mobile robot (AMR) and au
   6. Charging Infrastructure
   7. Material Handling Interfaces
   8. Site Access & Project Coordination
-- **Section Evidence Photo Upload (Max 1 Photo per Section)**: Capture or attach facility photos directly within each section with instant thumbnail previews.
+- **Remark-Level Evidence Photo Upload (Max 1 Photo per Remark)**: Capture or attach facility photos directly for individual checklist item remarks with instant thumbnail and fullscreen lightbox previews.
+- **Handwritten Signature Canvas**: Built-in touch/mouse digital signature pad embedded directly into exported reports.
 - **Action Items & Rectification Tracker**: Manage pending site modification tasks with responsible PIC and Due Dates.
-- **ReportLab PDF Generator**: Generates an official, pixel-accurate `FRM-FLD-003` PDF report embedding section photos, rating badges, and sign-offs.
+- **ReportLab PDF Generator**: Generates an official, pixel-accurate `FRM-FLD-003` PDF report embedding remark photos, rating badges, and sign-offs.
 - **Printable HTML View**: Print-ready format supporting direct browser printing.
 - **Wi-Fi & LAN Ready**: Runs with Waitress multi-threaded WSGI on port `3000` accessible across the local network.
 
@@ -34,8 +35,9 @@ pip install -r requirements.txt
 
 ### 2. Run Application
 ```bash
-# Production server (Waitress WSGI on port 3000)
-python3 scripts/run_server.py
+# Production server launcher (Waitress WSGI on port 3000)
+./start.sh
+# or: python3 scripts/run_server.py
 
 # Or development server
 python3 app.py
@@ -43,17 +45,24 @@ python3 app.py
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+### 3. Updating (Standalone)
+```bash
+./update.sh
+```
+
 ---
 
 ## 📁 Directory Structure
 
 ```
-site-readiness/
+dfsitereadiness/
 ├── app.py                      # Flask API backend & routes
 ├── report_generator.py         # Official ReportLab PDF generation engine
-├── data/                       # Runtime storage (.gitignored)
+├── start.sh                    # Production server launcher (Waitress on port 3000)
+├── update.sh                   # Standalone git pull & dependencies updater
+├── data/                       # Independent runtime storage (.gitignored)
 │   ├── checklist_template.json # Canonical 8-section FRM-FLD-003 checklist criteria
-│   ├── uploads/                # Uploaded section photos
+│   ├── uploads/                # Uploaded remark evidence photos
 │   └── db.json                 # Audit survey records database
 ├── scripts/run_server.py       # Production server launcher (Waitress)
 └── templates/

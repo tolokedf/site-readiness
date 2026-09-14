@@ -25,9 +25,9 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "df-site-readiness-secret-2026")
 PORT = int(os.environ.get("PORT", 3000))
 
-ROOT_DATABASE_DIR = BASE_DIR.parent / "Database" / "site_readiness"
-if ROOT_DATABASE_DIR.parent.exists():
-    DATA_DIR = ROOT_DATABASE_DIR
+CUSTOM_DATA_DIR = os.environ.get("SITE_READINESS_DATA_DIR")
+if CUSTOM_DATA_DIR:
+    DATA_DIR = Path(CUSTOM_DATA_DIR).resolve()
 else:
     DATA_DIR = BASE_DIR / "data"
 
