@@ -1,8 +1,26 @@
+# Virtual environments
 .venv/
 venv/
+ENV/
+env/
+
+# Python cache & bytecode
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# Local environment variables
 .env
+.env.local
+
+# Runtime survey database & uploads
+data/db.json
+data/db.json.tmp
 data/uploads/*
 !data/uploads/.gitkeep
-data/db.json
+
+# System & editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

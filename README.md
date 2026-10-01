@@ -35,7 +35,10 @@ pip install -r requirements.txt
 
 ### 2. Run Application
 ```bash
-# Production server launcher (Waitress WSGI on port 3000)
+# Windows (Double-click or run from CMD / PowerShell)
+start.bat
+
+# Linux (Production server launcher - Waitress WSGI on port 3000)
 ./start.sh
 # or: python3 scripts/run_server.py
 
@@ -47,8 +50,14 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### 3. Updating (Standalone)
 ```bash
+# Windows
+update.bat
+
+# Linux
 ./update.sh
 ```
+
+> 📖 **Full Deployment & Update Guide**: See [deployment_step.md](deployment_step.md) for complete instructions including Windows/Linux setup, network firewall configuration (port 3000 for mobile/tablet access), and systemd service creation.
 
 ---
 
@@ -58,8 +67,11 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 dfsitereadiness/
 ├── app.py                      # Flask API backend & routes
 ├── report_generator.py         # Official ReportLab PDF generation engine
-├── start.sh                    # Production server launcher (Waitress on port 3000)
-├── update.sh                   # Standalone git pull & dependencies updater
+├── start.bat                   # Windows production server launcher
+├── start.sh                    # Linux production server launcher (Waitress on port 3000)
+├── update.bat                  # Windows git pull & dependencies updater
+├── update.sh                   # Linux git pull & dependencies updater
+├── deployment_step.md          # Comprehensive deployment & update documentation
 ├── data/                       # Independent runtime storage (.gitignored)
 │   ├── checklist_template.json # Canonical 8-section FRM-FLD-003 checklist criteria
 │   ├── uploads/                # Uploaded remark evidence photos
